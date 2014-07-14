@@ -1,0 +1,36 @@
+.top-bar
+  background-color: $game-gray
+  padding: 14px 10px 5px
+  border-bottom: 1px solid darken($game-gray, 3%)
+  font-family: $alternative-font
+
+  .logo-image
+    +image-replace("logo.png")
+    float: left
+
+  .main-menu
+    float: right
+
+    .inline-list
+      float: left
+      margin-left: 10px
+      overflow: visible
+      +move(6px, bottom)
+
+  .main-menu-link
+    font-size: rem-calc(15)
+    bottom: -5px
+    font-weight: 500
+    +decorative-content
+      height: 2px
+      width: 0%
+      bottom: -5px
+      margin-left: 50%
+      background: $game-dark
+      +transition(.2s)
+    &:hover:after, &.current:after
+      width: 100%
+      margin-left: 0%
+
+  .social-link
+    font-size: rem-calc(20)

@@ -47,7 +47,7 @@
 // We use these to control various global styles
 // $body-bg: #fff;
 // $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$body-font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
 // $body-font-weight: $font-weight-normal;
 // $body-font-style: normal;
 
@@ -60,7 +60,7 @@
 // $default-float: left;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
+$primary-color: darken($game-gray, 35%);
 // $secondary-color: #e7e7e7;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
@@ -1297,4 +1297,11 @@
 // $range-slider-handle-bg-hover-color: scale-color($primary-color, $lightness: -12%);
 // $range-slider-handle-cursor: pointer;
 
-@import 'foundation';
+// @import 'foundation';
+@import
+  "foundation/components/block-grid",
+  "foundation/components/global",
+  "foundation/components/grid",
+  "foundation/components/inline-lists",
+  "foundation/components/type",
+  "foundation/components/visibility";

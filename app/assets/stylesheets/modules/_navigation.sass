@@ -1,0 +1,58 @@
+.arrow-nav
+  position: fixed
+  top: 120px
+  z-index: 30
+  .arrow-nav-link
+    background-color: $game-dark
+    padding: 35px 20px
+    display: block
+    text-transform: uppercase
+    font-size: rem-calc(14)
+    font-weight: 700
+    position: relative
+    +transition(.3s)
+    strong
+      text-transform: none
+      color: white
+      display: block
+      font-size: rem-calc(24)
+      font-weight: 400
+    i
+      font-size: rem-calc(40)
+      position: absolute
+      width: rem-calc(50)
+      height: 100%
+      text-align: center
+      top: 0
+      padding-top: rem-calc(30)
+      border: 3px solid darken($game-gray, 35%)
+    &:hover
+      i
+        background-color: $game-dark
+        border-color: transparent 
+        color: white
+
+  &.prev-nav
+    left: 0
+    .arrow-nav-link
+      padding-right: 100px
+      left: -100%
+      i
+        right: - rem-calc(50)
+        border-left: none
+        border-radius: 0 rem-calc(130) rem-calc(130) 0
+      &:hover
+        left: 0
+
+  &.next-nav
+    right: 0
+    text-align: right
+    .arrow-nav-link
+      padding-left: 100px
+      right: -100%
+      i
+        left: - rem-calc(50)
+        border-right: none
+        border-radius: rem-calc(130) 0 0 rem-calc(130)
+      &:hover
+        right: 0

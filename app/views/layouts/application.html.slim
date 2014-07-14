@@ -9,5 +9,8 @@ html lang="en"
     = csrf_meta_tags
   body
     = initjs_tag "DeloitteGame"
+    = render partial: 'shared/header'
+    = render partial: 'shared/navigation'
+
     = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true
