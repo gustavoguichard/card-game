@@ -17,7 +17,7 @@ gem "slim-rails", '>= 1.1.0'
 gem "high_voltage"
 gem 'browser' # To detect browser version
 gem 'compass-rails', '>= 1.1.7'
-# gem 'semantic-mixins'
+gem 'semantic-mixins'
 
 gem 'google-analytics-rails'
 
