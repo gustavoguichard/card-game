@@ -19,6 +19,7 @@ gem 'browser' # To detect browser version
 gem 'compass-rails', '>= 1.1.7'
 gem 'semantic-mixins'
 gem 'foundation-rails'
+gem 'initjs'
 
 gem 'google-analytics-rails'
 

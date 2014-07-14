@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require deloitte_game/deloitte_game.js
+//= require init.js
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
