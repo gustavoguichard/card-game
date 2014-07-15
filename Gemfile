@@ -14,7 +14,6 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem "slim", ">= 1.3.6"
 gem "slim-rails", '>= 1.1.0'
-gem "high_voltage"
 gem 'browser' # To detect browser version
 gem 'compass-rails', '>= 1.1.7'
 gem 'semantic-mixins'
