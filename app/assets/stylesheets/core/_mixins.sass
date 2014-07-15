@@ -1,0 +1,25 @@
+= full-height-columns($selector: '.column', $method: "table", $max-size: 999em)
+  @if $method == "table"
+    display: table
+    & #{$selector}
+      display: table-cell  
+  @else
+    overflow: hidden
+    & #{$selector}
+      margin-bottom: - $max-size
+      padding-bottom: $max-size
+      float: left
+
+= stick-to($direction: bottom, $position: absolute, $size: false)
+  position: $position
+  @if $direction == bottom or $direction == top
+    @if $size
+      height: $size
+    left: 0
+    right: 0
+  @if $direction == left or $direction == right
+    @if $size
+      width: $size
+    top: 0
+    bottom: 0
+  #{$direction}: 0

@@ -1,0 +1,44 @@
+.piles-of-cards
+  margin-top: 2em
+
+.cards-pile
+  border: 1px solid $game-dark
+  margin-bottom: 10px
+  padding: 10px 15px
+  min-height: 190px
+  position: relative
+  *
+    color: white
+  &.green-pile
+    background-color: $game-green
+  &.blue-pile
+    background-color: $game-blue
+  &.orange-pile
+    background-color: $game-orange
+  &.purple-pile
+    background-color: $game-purple
+
+  .pile-title
+    font-size: rem-calc(26)
+    font-weight: 700
+    text-transform: uppercase
+
+  .pile-description
+    font-size: rem-calc(20)
+
+  +decorative-content(after, false)
+    width: 98%
+    left: 1%
+    bottom: -3px
+
+  +decorative-content(before, false)
+    width: 96%
+    left: 2%
+    bottom: -5px
+
+  &:after, &:before
+    position: absolute
+    height: 20px
+    border: 1px solid $game-dark
+    background: white
+    z-index: -1

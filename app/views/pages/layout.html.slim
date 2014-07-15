@@ -1,0 +1,41 @@
+.game-container
+  h1 Place each card into one of four piles
+
+  .piles-container.row
+    ul.piles-of-cards.small-block-grid-2.medium-block-grid-4
+      li
+        .cards-pile.blue-pile data-pile="core"
+          h2.pile-title Core
+          p.pile-description This is what we’re all about
+      li
+        .cards-pile.green-pile data-pile="adjacent"
+          h2.pile-title Adjacent
+          p.pile-description It’s important, but not central
+      li
+        .cards-pile.purple-pile data-pile="aspirational"
+          h2.pile-title Aspirational
+          p.pile-description It’ll be important for us to do, or do more of, in the future
+      li
+        .cards-pile.orange-pile data-pile="out-of-bounds"
+          h2.pile-title Out of Bounds
+          p.pile-description It’s not what we’re about
+
+  .cards-container.row
+    ul.cards-on-table.small-block-grid-2.medium-block-grid-4
+      - i = 0
+      - 11.times do
+        li
+          - i += 1
+          .game-card class="#{"green-color color-choosed" if i == 3} #{"blue-color color-choosed" if i == 7} #{"orange-color color-choosed" if i == 10}"
+            header.color-selector
+              span.select-color.blue-color data-pile="core"
+              span.select-color.green-color data-pile="adjacent"
+              span.select-color.purple-color data-pile="aspirational"
+              span.select-color.orange-color data-pile="out-of-bounds"
+            article.card-content
+              h5.card-title Advocating
+              p.card-description Promoting specific organizations and interventions
+            footer.card-footer
+              a href="#"
+                span Flip to read more
+                i.entypo-arrows-ccw
