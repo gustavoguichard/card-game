@@ -1,7 +1,8 @@
+.cards-container
+  perspective: 800px
 .game-card
   height: 400px
   width: 238px
-  border: 1px solid $game-dark
   display: inline-block
   padding: 15px 10px
   font-size: rem-calc(24)
@@ -9,36 +10,56 @@
   margin: 0 1% 20px 0
   position: relative
   vertical-align: top
-  background: white
+  +transform-style
+  +transition(transform 1s)
   &.ui-draggable-dragging
     opacity: .6
   &.color-choosed
     .select-color
       opacity: .3
   &.blue-color
-    border-color: transparent
-    box-shadow: 0 0 0 4px $game-blue inset
+    .card-face
+      box-shadow: 0 0 0 4px $game-blue inset
     .blue-color
       opacity: 1
       box-shadow: 0 0 0 3px white, 0 0 0 5px $game-blue
   &.green-color
-    border-color: transparent
-    box-shadow: 0 0 0 4px $game-green inset
+    .card-face
+      box-shadow: 0 0 0 4px $game-green inset
     .green-color
       opacity: 1
       box-shadow: 0 0 0 3px white, 0 0 0 5px $game-green
   &.purple-color
-    border-color: transparent
-    box-shadow: 0 0 0 4px $game-purple inset
+    .card-face
+      box-shadow: 0 0 0 4px $game-purple inset
     .purple-color
       opacity: 1
       box-shadow: 0 0 0 3px white, 0 0 0 5px $game-purple
   &.orange-color
-    border-color: transparent
-    box-shadow: 0 0 0 4px $game-orange inset
+    .card-face
+      box-shadow: 0 0 0 4px $game-orange inset
     .orange-color
       opacity: 1
       box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
+  &.flipped
+    +transform(rotateY(180deg))
+    box-shadow: 0 2px 3px rgba(black,.3)
+    .card-back
+      z-index: 10
+  .card-face
+    box-shadow: 0 0 0 1px $game-dark
+    background: white
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    +backface-visibility(hidden)
+  .card-back
+    padding: 4px
+    +transform(rotateY(180deg))
+  .card-front
+    z-index: 5
   .card-action
     text-transform: uppercase
     font-size: rem-calc(12)

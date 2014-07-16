@@ -11,9 +11,10 @@ DeloitteGame.Pages.Layout =
 DeloitteGame.GameCard = Backbone.View.extend
   events:
     'click .select-color': 'colorClicked'
-    'customEvent': 'customFunction'
+    'click .card-flipper': 'flipCard'
+    'pileChange': 'pileChangeHandler'
   initialize: ->
-    _.bindAll this, 'colorClicked', 'setPile', 'changeClass', 'customFunction'
+    _.bindAll this, 'colorClicked', 'setPile', 'changeClass', 'pileChangeHandler', 'flipCard'
     @$el.draggable(
       revert: true
       revertDuration: 300
@@ -23,23 +24,33 @@ DeloitteGame.GameCard = Backbone.View.extend
     @colorOpts = ['blue', 'green', 'purple', 'orange']
     @pileOpts = ['core', 'adjacent', 'aspirational', 'out-of-bounds']
     @pile = null
+    @color = null
 
   setPile: (pile)->
     index = jQuery.inArray(pile, @pileOpts)
-    if @colorOpts[index] == @pile then @pile = null else @pile = @colorOpts[index]
+    if pile == @pile
+      @pile = null
+      @color = null
+    else
+      @pile = pile
+      @color = @colorOpts[index]
     @changeClass()
 
   changeClass: ->
     @$el.removeClass 'blue-color purple-color orange-color green-color color-choosed'
-    if @pile
-      @$el.addClass "#{@pile}-color color-choosed"
+    if @color
+      @$el.addClass "#{@color}-color color-choosed"
 
   colorClicked: (e)->
     pile = $(e.currentTarget).data('pile')
     @setPile(pile)
 
-  customFunction: (e, pile)->
-    @setPile(pile)
+  pileChangeHandler: (e, pile)->
+    @setPile(pile) if pile isnt @pile
+
+  flipCard: (e)->
+    @$el.toggleClass 'flipped'
+    return false
     
 DeloitteGame.CardsPile = Backbone.View.extend
   initialize: ->
@@ -47,5 +58,5 @@ DeloitteGame.CardsPile = Backbone.View.extend
       activeClass: "ui-droppable-active"
       hoverClass: "ui-droppable-hover"
       drop: ( event, ui )->
-        $(ui.draggable[0]).trigger 'customEvent', $(this).data('pile')
+        $(ui.draggable[0]).trigger 'pileChange', $(this).data('pile')
     )
