@@ -20,27 +20,15 @@
   &.blue-color
     .card-face
       box-shadow: 0 0 0 4px $game-blue inset
-    .blue-color
-      opacity: 1
-      box-shadow: 0 0 0 3px white, 0 0 0 5px $game-blue
   &.green-color
     .card-face
       box-shadow: 0 0 0 4px $game-green inset
-    .green-color
-      opacity: 1
-      box-shadow: 0 0 0 3px white, 0 0 0 5px $game-green
   &.purple-color
     .card-face
       box-shadow: 0 0 0 4px $game-purple inset
-    .purple-color
-      opacity: 1
-      box-shadow: 0 0 0 3px white, 0 0 0 5px $game-purple
   &.orange-color
     .card-face
       box-shadow: 0 0 0 4px $game-orange inset
-    .orange-color
-      opacity: 1
-      box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
   &.flipped
     +transform(rotateY(180deg))
     box-shadow: 0 2px 3px rgba(black,.3)
@@ -49,11 +37,8 @@
   .card-face
     box-shadow: 0 0 0 1px $game-dark
     background: white
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
+    +expand-to-fit
+    +transition(.3s)
     +backface-visibility(hidden)
   .card-back
     padding: 4px
@@ -90,21 +75,23 @@
       border-radius: 50%
       cursor: pointer
       +transition(.2s)
+      &.selected
+        opacity: 1
       &.blue-color
         background-color: $game-blue
-        &:hover
+        &:hover, &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-blue
       &.green-color
         background-color: $game-green
-        &:hover
+        &:hover, &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-green
       &.purple-color
         background-color: $game-purple
-        &:hover
+        &:hover, &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-purple
       &.orange-color
         background-color: $game-orange
-        &:hover
+        &:hover, &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
 
   .card-footer

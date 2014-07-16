@@ -38,8 +38,11 @@ DeloitteGame.GameCard = Backbone.View.extend
 
   changeClass: ->
     @$el.removeClass 'blue-color purple-color orange-color green-color color-choosed'
+    @$('.select-color').removeClass 'selected'
     if @color
       @$el.addClass "#{@color}-color color-choosed"
+      @$(".select-color.#{@color}-color").addClass 'selected'
+
 
   colorClicked: (e)->
     pile = $(e.currentTarget).data('pile')
