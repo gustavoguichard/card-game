@@ -11,7 +11,7 @@
   position: relative
   vertical-align: top
   +transform-style
-  +transition(transform 1s)
+  +transition(transform .6s)
   &.ui-draggable-dragging
     opacity: .6
   &.color-choosed
@@ -35,10 +35,10 @@
     .card-back
       z-index: 10
   .card-face
-    box-shadow: 0 0 0 1px $game-dark
+    box-shadow: 0 0 0 1px $game-dark inset
     background: white
     +expand-to-fit
-    +transition(.3s)
+    +transition(.2s)
     +backface-visibility(hidden)
   .card-back
     padding: 4px
@@ -63,7 +63,7 @@
     font-size: 1em
     font-weight: 500
     line-height: 1.3em
-    padding: 0 10px
+    padding: 0 20px
 
   .color-selector
     padding: 20px 0
