@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require lib/underscore
+//= require lib/backbone
 //= require deloitte_game/deloitte_game.js
 //= require init.js
 //= require_tree .

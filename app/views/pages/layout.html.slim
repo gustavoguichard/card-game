@@ -21,21 +21,17 @@
           p.pile-description It’s not what we’re about
 
   .cards-container.row
-    ul.cards-on-table.small-block-grid-2.medium-block-grid-4
-      - i = 0
-      - 11.times do
-        li
-          - i += 1
-          .game-card class="#{"green-color color-choosed" if i == 3} #{"blue-color color-choosed" if i == 7} #{"orange-color color-choosed" if i == 10}"
-            header.color-selector
-              span.select-color.blue-color data-pile="core"
-              span.select-color.green-color data-pile="adjacent"
-              span.select-color.purple-color data-pile="aspirational"
-              span.select-color.orange-color data-pile="out-of-bounds"
-            article.card-content
-              h5.card-title Advocating
-              p.card-description Promoting specific organizations and interventions
-            footer.card-footer
-              a href="#"
-                span Flip to read more
-                i.entypo-arrows-ccw
+    - @cards.each do | card |
+      .game-card
+        header.color-selector
+          span.select-color.blue-color data-pile="core"
+          span.select-color.green-color data-pile="adjacent"
+          span.select-color.purple-color data-pile="aspirational"
+          span.select-color.orange-color data-pile="out-of-bounds"
+        article.card-content
+          h5.card-title= card[:title]
+          p.card-description= card[:action]
+        footer.card-footer
+          a href="#"
+            span Flip to read more
+            i.entypo-arrows-ccw
