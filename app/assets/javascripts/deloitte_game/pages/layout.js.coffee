@@ -3,7 +3,7 @@ DeloitteGame.Pages ?= {}
 DeloitteGame.Pages.Layout = 
   # modules: -> [DeloitteGame.GameCard]
   init: ->
-    for $card in $('.game-card')
+    for $card in $('.game-card-container')
       new DeloitteGame.GameCard({el: $card})
     for $pile in $('.cards-pile')
       new DeloitteGame.CardsPile({el: $pile})
@@ -21,6 +21,7 @@ DeloitteGame.GameCard = Backbone.View.extend
       helper: "clone"
       cursor: "move"
     )
+    @card = @$el.find('.game-card')
     @colorOpts = ['blue', 'green', 'purple', 'orange']
     @pileOpts = ['core', 'adjacent', 'aspirational', 'out-of-bounds']
     @pile = null
@@ -37,10 +38,10 @@ DeloitteGame.GameCard = Backbone.View.extend
     @changeClass()
 
   changeClass: ->
-    @$el.removeClass 'blue-color purple-color orange-color green-color color-choosed'
+    @card.removeClass 'blue-color purple-color orange-color green-color color-choosed'
     @$('.select-color').removeClass 'selected'
     if @color
-      @$el.addClass "#{@color}-color color-choosed"
+      @card.addClass "#{@color}-color color-choosed"
       @$(".select-color.#{@color}-color").addClass 'selected'
 
 
@@ -52,7 +53,7 @@ DeloitteGame.GameCard = Backbone.View.extend
     @setPile(pile) if pile isnt @pile
 
   flipCard: (e)->
-    @$el.toggleClass 'flipped'
+    @card.toggleClass 'flipped'
     return false
     
 DeloitteGame.CardsPile = Backbone.View.extend

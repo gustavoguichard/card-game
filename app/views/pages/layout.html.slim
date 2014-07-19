@@ -22,23 +22,24 @@
 
   .cards-container.row
     - @cards.each do | card |
-      .game-card
-        .card-face.card-front
-          header.color-selector
-            span.select-color.blue-color data-pile="core"
-            span.select-color.green-color data-pile="adjacent"
-            span.select-color.purple-color data-pile="aspirational"
-            span.select-color.orange-color data-pile="out-of-bounds"
-          article.card-content
-            h5.card-action= card[:action]
-            p.card-title= card[:title]
-          footer.card-footer
-            a.card-flipper href="#"
-              span Flip to read more
-              i.entypo-arrows-ccw
-        .card-face.card-back
-          = image_tag "card-back.png"
-          footer.card-footer
-            a.card-flipper href="#"
-              span Flip card
-              i.entypo-arrows-ccw
+      .game-card-container
+        .game-card
+          .card-face.card-front
+            header.color-selector
+              span.select-color.blue-color data-pile="core"
+              span.select-color.green-color data-pile="adjacent"
+              span.select-color.purple-color data-pile="aspirational"
+              span.select-color.orange-color data-pile="out-of-bounds"
+            article.card-content
+              h5.card-action= card[:action]
+              p.card-title= card[:title]
+            footer.card-footer
+              a.card-flipper href="#"
+                span Flip to read more
+                i.entypo-arrows-ccw
+          .card-face.card-back
+            = image_tag "card-back.png"
+            footer.card-footer
+              a.card-flipper href="#"
+                span Flip card
+                i.entypo-arrows-ccw

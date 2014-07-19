@@ -1,13 +1,13 @@
-.cards-container
-  perspective: 800px
+.game-card-container
+  +perspective(1500)
+  display: inline-block
+  margin: 0 1% 20px 0
 .game-card
   height: 400px
   width: 238px
-  display: inline-block
   padding: 15px 10px
   font-size: rem-calc(24)
   color: $game-dark
-  margin: 0 1% 20px 0
   position: relative
   vertical-align: top
   +transform-style
