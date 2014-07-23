@@ -21,8 +21,9 @@
           p.pile-description It’s not what we’re about
 
   .cards-container.row
+    - i = 0
     - @cards.each do | card |
-      .game-card-container
+      .game-card-container.no-color data-custom-order="#{i}"
         .game-card
           .card-face.card-front
             header.color-selector
@@ -43,6 +44,15 @@
               a.card-flipper href="#"
                 span Flip card
                 i.entypo-arrows-ccw
+      - i += 1
 
   .footer-count
-    span#cards-counter You have chosen 0 out of 47 possible cards
+    span
+      | You have chosen 
+      i#cards-counter 0
+      |  out of 
+      i#cards-total 47
+      |  possible cards. 
+      a.button.filter data-filter=".no-color" Cards left
+      | . 
+      a.button.filter data-filter="all" All Cards

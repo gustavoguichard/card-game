@@ -18,6 +18,7 @@
     "jquery-waypoints": "~2.0.5",
     "jquery-ujs": "~1.0.0",
     "jquery-ui": "~1.11.0",
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "mixitup": "~2.1.5"
   }
 }

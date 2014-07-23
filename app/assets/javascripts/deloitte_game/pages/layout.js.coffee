@@ -12,9 +12,13 @@ DeloitteGame.Pages.Layout =
       @cardsPile.push new DeloitteGame.CardsPile({el: $pile})
     @pilesContainer = new DeloitteGame.PilesContainer({el: $('.piles-container').first()})
     @footerCount = new DeloitteGame.FooterCounter({el: $('.footer-count').first(), model: @model})
-
-  cardSelectedHandler: ->
-    alert "Hey"
+    $('.cards-container').mixItUp
+        animation:
+          duration: 940
+          effects: 'fade translateZ(-360px) rotateY(-100deg) stagger(75ms)'
+          easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+        selectors:
+          target: '.game-card-container'
 
 DeloitteGame.GameCard = Backbone.View.extend
   events:
@@ -46,11 +50,13 @@ DeloitteGame.GameCard = Backbone.View.extend
     @changeClass()
 
   changeClass: ->
-    @card.removeClass 'blue-color purple-color orange-color green-color color-choosed'
+    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed'
     @$('.select-color').removeClass 'selected'
     if @color
-      @card.addClass "#{@color}-color color-choosed"
+      @$el.addClass "#{@color}-color color-choosed"
       @$(".select-color.#{@color}-color").addClass 'selected'
+    else
+      @$el.addClass "no-color"
     @model.cardSelected()
 
   colorClicked: (e)->
@@ -81,9 +87,11 @@ DeloitteGame.FooterCounter = Backbone.View.extend
   initialize: ->
     @model.on 'change', @render, @
     @counter = @$('#cards-counter')
+    @total = @$('#cards-total')
 
   render: ->
-    @counter.html "You have chosen #{@model.get('selectedCards')} out of #{@model.get('totalCards')} possible cards"    
+    @counter.html @model.get('selectedCards')
+    @total.html @model.get('totalCards')
 
 DeloitteGame.GameModel = Backbone.Model.extend
   defaults:
@@ -96,4 +104,4 @@ DeloitteGame.GameModel = Backbone.Model.extend
     @set 'totalCards', $('.game-card-container').length
 
   cardSelected: ->
-    @set 'selectedCards', $('.game-card-container .color-choosed').length
+    @set 'selectedCards', @get('totalCards') - $('.game-card-container.no-color').length

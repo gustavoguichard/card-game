@@ -1,21 +1,9 @@
 .game-card-container
   +perspective(1500)
-  display: inline-block
+  display: none
   margin: 0 1% 20px 0
-.game-card
-  height: 400px
-  width: 238px
-  padding: 15px 10px
-  font-size: rem-calc(24)
-  color: $game-dark
-  position: relative
-  vertical-align: top
-  +transform-style
-  +transition(transform .6s)
-  &.ui-draggable-dragging
-    opacity: .6
-    z-index: 2000
-    position: absolute
+  +context('.no-js')
+    display: inline-block
   &.color-choosed
     .select-color
       opacity: .3
@@ -31,6 +19,21 @@
   &.orange-color
     .card-face
       box-shadow: 0 0 0 4px $game-orange inset
+
+.game-card
+  height: 400px
+  width: 238px
+  padding: 15px 10px
+  font-size: rem-calc(24)
+  color: $game-dark
+  position: relative
+  vertical-align: top
+  +transform-style
+  +transition(transform .6s)
+  &.ui-draggable-dragging
+    opacity: .6
+    z-index: 2000
+    position: absolute
   &.flipped
     +transform(rotateY(180deg))
     box-shadow: 0 2px 3px rgba(black,.3)

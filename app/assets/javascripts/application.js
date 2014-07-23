@@ -19,6 +19,7 @@
 //= require jquery-ui/ui/droppable
 //= require jquery-waypoints/waypoints
 //= require jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky
+//= require mixitup/build/jquery.mixitup.min
 //= require foundation
 //= require turbolinks
 //= require underscore/underscore
