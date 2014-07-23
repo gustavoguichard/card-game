@@ -18,10 +18,11 @@
 //= require jquery-ui/ui/draggable
 //= require jquery-ui/ui/droppable
 //= require jquery-waypoints/waypoints
+//= require jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky
 //= require foundation
 //= require turbolinks
-//= require lib/underscore
-//= require lib/backbone
+//= require underscore/underscore
+//= require backbone/backbone
 //= require deloitte_game/deloitte_game.js
 //= require init.js
 //= require_tree .

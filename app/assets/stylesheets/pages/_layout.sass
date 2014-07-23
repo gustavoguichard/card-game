@@ -1,17 +1,41 @@
-.piles-of-cards
-  margin-top: 2em
+.page-title
+  margin-bottom: 2.5em
+
+.piles-container
+  +transition(.3s)
+  &.stuck
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    z-index: 1000
+    max-width: 100%
+    .piles-of-cards
+      max-width: 100%
+      margin: 0
+      li
+        padding: 0
+    .cards-pile
+      min-height: initial
+      &:before, &:after
+        display: none
+    .pile-description
+      display: none
 
 .cards-pile
-  border: 1px solid $game-dark
+  box-shadow: 0 0 0 1px $game-dark
   margin-bottom: 10px
   padding: 10px 15px
   min-height: 190px
   position: relative
   +transition(.3s)
   &.ui-droppable-hover
-    margin-top: -5px
+    margin-top: -2px
     &:before
       box-shadow: 0 2px 3px rgba(black,.3)
+      bottom: -9px
+    &:after
+      bottom: -4px
   *
     color: white
   &.green-pile
@@ -39,7 +63,6 @@
     width: 96%
     left: 2%
     bottom: -5px
-    +transition(.3s)
 
   &:after, &:before
     position: absolute
@@ -47,3 +70,18 @@
     border: 1px solid $game-dark
     background: white
     z-index: -1
+    +transition(.3s)
+
+.footer-count
+  background: white
+  +stick-to(bottom, fixed)
+  padding: 20px 0
+  box-shadow: 0 -1px 3px rgba(black,.3)
+  &.green-pile
+    background-color: $game-green
+  &.blue-pile
+    background-color: $game-blue
+  &.orange-pile
+    background-color: $game-orange
+  &.purple-pile
+    background-color: $game-purple

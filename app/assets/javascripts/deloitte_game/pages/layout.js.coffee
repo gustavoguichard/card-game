@@ -3,10 +3,18 @@ DeloitteGame.Pages ?= {}
 DeloitteGame.Pages.Layout = 
   # modules: -> [DeloitteGame.GameCard]
   init: ->
+    @model = new DeloitteGame.GameModel
+    @gameCards = []
+    @cardsPile = []
     for $card in $('.game-card-container')
-      new DeloitteGame.GameCard({el: $card})
+      @gameCards.push new DeloitteGame.GameCard({el: $card, model: @model})
     for $pile in $('.cards-pile')
-      new DeloitteGame.CardsPile({el: $pile})
+      @cardsPile.push new DeloitteGame.CardsPile({el: $pile})
+    @pilesContainer = new DeloitteGame.PilesContainer({el: $('.piles-container').first()})
+    @footerCount = new DeloitteGame.FooterCounter({el: $('.footer-count').first(), model: @model})
+
+  cardSelectedHandler: ->
+    alert "Hey"
 
 DeloitteGame.GameCard = Backbone.View.extend
   events:
@@ -14,7 +22,7 @@ DeloitteGame.GameCard = Backbone.View.extend
     'click .card-flipper': 'flipCard'
     'pileChange': 'pileChangeHandler'
   initialize: ->
-    _.bindAll this, 'colorClicked', 'setPile', 'changeClass', 'pileChangeHandler', 'flipCard'
+    _.bindAll @, 'colorClicked', 'setPile', 'changeClass', 'pileChangeHandler', 'flipCard'
     @$el.draggable(
       revert: true
       revertDuration: 300
@@ -43,7 +51,7 @@ DeloitteGame.GameCard = Backbone.View.extend
     if @color
       @card.addClass "#{@color}-color color-choosed"
       @$(".select-color.#{@color}-color").addClass 'selected'
-
+    @model.cardSelected()
 
   colorClicked: (e)->
     pile = $(e.currentTarget).data('pile')
@@ -64,3 +72,28 @@ DeloitteGame.CardsPile = Backbone.View.extend
       drop: ( event, ui )->
         $(ui.draggable[0]).trigger 'pileChange', $(this).data('pile')
     )
+
+DeloitteGame.PilesContainer = Backbone.View.extend
+  initialize: ->
+    @$el.waypoint('sticky')
+
+DeloitteGame.FooterCounter = Backbone.View.extend
+  initialize: ->
+    @model.on 'change', @render, @
+    @counter = @$('#cards-counter')
+
+  render: ->
+    @counter.html "You have chosen #{@model.get('selectedCards')} out of #{@model.get('totalCards')} possible cards"    
+
+DeloitteGame.GameModel = Backbone.Model.extend
+  defaults:
+    currentPage: 'home'
+    selectedCards: 0
+    totalCards: 0
+
+  initialize: ->
+    _.bindAll @, 'cardSelected'
+    @set 'totalCards', $('.game-card-container').length
+
+  cardSelected: ->
+    @set 'selectedCards', $('.game-card-container .color-choosed').length
