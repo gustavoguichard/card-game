@@ -10,8 +10,6 @@ gem 'pg'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
 gem "slim", ">= 1.3.6"
 gem "slim-rails", '>= 1.1.0'
 gem 'browser' # To detect browser version

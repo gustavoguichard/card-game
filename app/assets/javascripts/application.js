@@ -10,10 +10,14 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require jquery-ui/draggable
-//= require jquery-ui/droppable
+//= require jquery/dist/jquery
+//= require jquery-ujs/src/rails
+//= require jquery-ui/ui/core
+//= require jquery-ui/ui/widget
+//= require jquery-ui/ui/mouse
+//= require jquery-ui/ui/draggable
+//= require jquery-ui/ui/droppable
+//= require jquery-waypoints/waypoints
 //= require foundation
 //= require turbolinks
 //= require lib/underscore
