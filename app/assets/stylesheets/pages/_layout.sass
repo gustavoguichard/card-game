@@ -3,6 +3,8 @@
 
 .piles-container
   +transition(.3s)
+  @media only screen and (max-width: 1012px)
+    width: 100%
   &.stuck
     position: fixed
     top: 0
@@ -10,13 +12,11 @@
     right: 0
     z-index: 1000
     max-width: 100%
-    .piles-of-cards
-      max-width: 100%
-      margin: 0
-      li
-        padding: 0
     .cards-pile
       min-height: initial
+      box-shadow: none
+      width: 25%
+      margin: 0
       &:before, &:after
         display: none
     .pile-description
@@ -27,8 +27,22 @@
   margin-bottom: 10px
   padding: 10px 15px
   min-height: 190px
+  width: 238px
+  vertical-align: top
+  margin: 0 .5% 20px
   position: relative
+  display: inline-block
   +transition(.3s)
+  // +apply-to(less-than, desktop)
+  @media only screen and (max-width: 1012px)
+    min-height: initial
+    box-shadow: none
+    width: 25%
+    margin: 0 0 20px
+    &:before, &:after
+      display: none !important
+    .pile-description
+      display: none
   &.ui-droppable-hover
     margin-top: -2px
     &:before
@@ -51,6 +65,9 @@
     font-size: rem-calc(26)
     font-weight: 700
     text-transform: uppercase
+
+  .first-letter
+    display: none
 
   .pile-description
     font-size: rem-calc(20)

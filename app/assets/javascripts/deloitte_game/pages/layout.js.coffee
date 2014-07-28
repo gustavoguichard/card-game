@@ -15,7 +15,7 @@ DeloitteGame.Pages.Layout =
     $('.cards-container').mixItUp
         animation:
           duration: 940
-          effects: 'fade translateZ(-360px) rotateY(-100deg) stagger(75ms)'
+          effects: 'fade translateZ(-360px) rotateY(-100deg) stagger(50ms)'
           easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
         selectors:
           target: '.game-card-container'
