@@ -68,7 +68,7 @@ DeloitteGame.GameCard = Backbone.View.extend
 
   flipCard: (e)->
     @card.toggleClass 'flipped'
-    return false
+    return false    
     
 DeloitteGame.CardsPile = Backbone.View.extend
   initialize: ->
@@ -80,11 +80,37 @@ DeloitteGame.CardsPile = Backbone.View.extend
     )
 
 DeloitteGame.PilesContainer = Backbone.View.extend
+  events:
+    'click .cards-pile': 'cardsPileClicked'
   initialize: ->
+    _.bindAll @, 'cardsPileClicked'
+    @$el.append('<div id="floating-pile-description">')
     @$el.waypoint('sticky')
+    @floatingPileDescrition = @$('#floating-pile-description')
+    @currentOpenPile = null
+
+  cardsPileClicked: (e)->
+    $tg = $(e.currentTarget)
+    @$('.cards-pile').removeClass 'open-pile'
+    @floatingPileDescrition.removeClass 'open core adjacent out-of-bounds aspirational'
+    unless @currentOpenPile is $tg.data('pile')
+      @openPileDescription($tg)
+    else
+      @currentOpenPile = null
+
+  openPileDescription: ($tg)->
+    @currentOpenPile = $tg.data 'pile'
+    description = $tg.find('.pile-description').html()
+    $tg.addClass 'open-pile'
+    @floatingPileDescrition.addClass("open #{$tg.data 'pile'}")
+    @floatingPileDescrition.html(description)
 
 DeloitteGame.FooterCounter = Backbone.View.extend
+  events: ->
+    'click .cards-left-bt': 'leftCards'
+
   initialize: ->
+    _.bindAll @, 'render', 'leftCards'
     @model.on 'change', @render, @
     @counter = @$('#cards-counter')
     @total = @$('#cards-total')
@@ -92,6 +118,10 @@ DeloitteGame.FooterCounter = Backbone.View.extend
   render: ->
     @counter.html @model.get('selectedCards')
     @total.html @model.get('totalCards')
+
+  leftCards: (e)->
+    $('.cards-container').mixItUp('filter', '.no-color')
+    false
 
 DeloitteGame.GameModel = Backbone.Model.extend
   defaults:

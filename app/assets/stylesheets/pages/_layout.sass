@@ -1,7 +1,26 @@
+= full-width-piles
+  min-height: initial
+  box-shadow: none
+  width: 25%
+  margin: 0
+  cursor: pointer
+  &:before, &:after
+    display: none !important
+  .pile-description
+    display: none
+  &.open-pile
+    .first-letter
+      color: transparent
+      &:before
+        content: "x"
+        color: white
+        position: absolute
+
 .page-title
   margin-bottom: 2.5em
 
 .piles-container
+  margin-bottom: 20px
   +transition(.3s)
   @media only screen and (max-width: 1012px)
     width: 100%
@@ -13,36 +32,21 @@
     z-index: 1000
     max-width: 100%
     .cards-pile
-      min-height: initial
-      box-shadow: none
-      width: 25%
-      margin: 0
-      &:before, &:after
-        display: none
-    .pile-description
-      display: none
+      +full-width-piles
 
 .cards-pile
   box-shadow: 0 0 0 1px $game-dark
-  margin-bottom: 10px
   padding: 10px 15px
   min-height: 190px
   width: 238px
   vertical-align: top
-  margin: 0 .5% 20px
+  margin: 0 .5%
   position: relative
   display: inline-block
   +transition(.3s)
   // +apply-to(less-than, desktop)
   @media only screen and (max-width: 1012px)
-    min-height: initial
-    box-shadow: none
-    width: 25%
-    margin: 0 0 20px
-    &:before, &:after
-      display: none !important
-    .pile-description
-      display: none
+    +full-width-piles
   &.ui-droppable-hover
     margin-top: -2px
     &:before
@@ -87,18 +91,47 @@
     border: 1px solid $game-dark
     background: white
     z-index: -1
-    +transition(.3s)
+    +transition(.3s)    
+
+  @media only screen and (max-width: 831px)
+    .full-title
+      display: none
+    .first-letter
+      display: block
 
 .footer-count
   background: white
   +stick-to(bottom, fixed)
   padding: 20px 0
   box-shadow: 0 -1px 3px rgba(black,.3)
-  &.green-pile
+  &.green-color
     background-color: $game-green
-  &.blue-pile
+  &.blue-color
     background-color: $game-blue
-  &.orange-pile
+  &.orange-color
     background-color: $game-orange
-  &.purple-pile
+  &.purple-color
+    background-color: $game-purple
+
+#floating-pile-description
+  position: absolute
+  left: 0
+  right: 0
+  padding: 15px
+  display: none
+  color: white
+  font-size: rem-calc(20)
+  z-index: 100
+  .stuck &.open
+    display: block
+  @media only screen and (max-width: 1012px)
+    &.open
+      display: block
+  &.adjacent
+    background-color: $game-green
+  &.core
+    background-color: $game-blue
+  &.out-of-bounds
+    background-color: $game-orange
+  &.aspirational
     background-color: $game-purple
