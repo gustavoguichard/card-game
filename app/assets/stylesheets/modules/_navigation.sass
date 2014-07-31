@@ -3,6 +3,7 @@
   top: 120px
   z-index: 30
   overflow: hidden
+  min-width: 190px
   .arrow-nav-link
     background-color: $game-dark
     padding: 35px 20px
@@ -36,8 +37,8 @@
 
   &.prev-nav
     left: 0
+    padding-right: 50px
     .arrow-nav-link
-      padding-right: 100px
       left: -100%
       i
         right: - rem-calc(50)
@@ -48,9 +49,9 @@
 
   &.next-nav
     right: 0
+    padding-left: 50px
     text-align: right
     .arrow-nav-link
-      padding-left: 100px
       right: -100%
       i
         left: - rem-calc(50)

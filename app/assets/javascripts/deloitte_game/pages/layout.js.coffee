@@ -26,7 +26,8 @@ DeloitteGame.GameCard = Backbone.View.extend
     'click .card-flipper': 'flipCard'
     'pileChange': 'pileChangeHandler'
   initialize: ->
-    _.bindAll @, 'colorClicked', 'setPile', 'changeClass', 'pileChangeHandler', 'flipCard'
+    _.bindAll @, 'colorClicked', 'setPile', 'pileChangeHandler', 'flipCard', 'render'
+    @model.on 'change:cardsChoosen', @render, @
     @$el.draggable(
       revert: true
       revertDuration: 300
@@ -36,8 +37,19 @@ DeloitteGame.GameCard = Backbone.View.extend
     @card = @$el.find('.game-card')
     @colorOpts = ['blue', 'green', 'purple', 'orange']
     @pileOpts = ['core', 'adjacent', 'aspirational', 'out-of-bounds']
+    @id = @$el.data('card-id')
     @pile = null
     @color = null
+    @setPile(@model.get('cardsChoosen')[@id]) if @model.get('cardsChoosen')[@id]
+
+  render: ->
+    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed'
+    @$('.select-color').removeClass 'selected'
+    if @color
+      @$el.addClass "#{@color}-color color-choosed"
+      @$(".select-color.#{@color}-color").addClass 'selected'
+    else
+      @$el.addClass "no-color"
 
   setPile: (pile)->
     index = jQuery.inArray(pile, @pileOpts)
@@ -47,17 +59,7 @@ DeloitteGame.GameCard = Backbone.View.extend
     else
       @pile = pile
       @color = @colorOpts[index]
-    @changeClass()
-
-  changeClass: ->
-    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed'
-    @$('.select-color').removeClass 'selected'
-    if @color
-      @$el.addClass "#{@color}-color color-choosed"
-      @$(".select-color.#{@color}-color").addClass 'selected'
-    else
-      @$el.addClass "no-color"
-    @model.cardSelected()
+    @model.pushCard @id, @pile 
 
   colorClicked: (e)->
     pile = $(e.currentTarget).data('pile')
@@ -79,11 +81,13 @@ DeloitteGame.CardsPile = Backbone.View.extend
         $(ui.draggable[0]).trigger 'pileChange', $(this).data('pile')
     )
 
+# RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING
+# TO TOP AND OPENING DESCRIPTIONS WHEN IN SMALL SCREENS
 DeloitteGame.PilesContainer = Backbone.View.extend
   events:
     'click .cards-pile': 'cardsPileClicked'
   initialize: ->
-    _.bindAll @, 'cardsPileClicked'
+    _.bindAll @, 'cardsPileClicked', 'openPileDescription'
     @$el.append('<div id="floating-pile-description">')
     @$el.waypoint('sticky')
     @floatingPileDescrition = @$('#floating-pile-description')
@@ -105,6 +109,7 @@ DeloitteGame.PilesContainer = Backbone.View.extend
     @floatingPileDescrition.addClass("open #{$tg.data 'pile'}")
     @floatingPileDescrition.html(description)
 
+# RESPONSIBLE TO CHANGE FOOTER COUNTES WHEN A NEW CARD IS SELECTED
 DeloitteGame.FooterCounter = Backbone.View.extend
   events: ->
     'click .cards-left-bt': 'leftCards'
@@ -114,24 +119,43 @@ DeloitteGame.FooterCounter = Backbone.View.extend
     @model.on 'change', @render, @
     @counter = @$('#cards-counter')
     @total = @$('#cards-total')
+    @render()
 
   render: ->
-    @counter.html @model.get('selectedCards')
+    @counter.html @model.get('selectedCardsLenght')
     @total.html @model.get('totalCards')
 
   leftCards: (e)->
     $('.cards-container').mixItUp('filter', '.no-color')
     false
 
+# TAKES CARE OF DATA OF ENTIRE GAME
 DeloitteGame.GameModel = Backbone.Model.extend
   defaults:
     currentPage: 'home'
-    selectedCards: 0
+    selectedCardsLenght: 0
     totalCards: 0
+    cardsChoosen: {}
+    gameScreen: "all"
 
   initialize: ->
-    _.bindAll @, 'cardSelected'
+    _.bindAll @, 'cardSelected', 'pushCard', 'cleanJson'
+    @on 'change:cardsChoosen', @cardSelected, @
+    @json = store.get("cardsChoosen") || {}
+    @set 'cardsChoosen', @json
+    @set 'selectedCardsLenght', 0
     @set 'totalCards', $('.game-card-container').length
 
   cardSelected: ->
-    @set 'selectedCards', @get('totalCards') - $('.game-card-container.no-color').length
+    @set 'selectedCardsLenght', _.size(@json)
+
+  pushCard: (card, pile)->
+    @json[card] = pile
+    @cleanJson() if @json?
+    @set 'cardsChoosen', null
+    @set 'cardsChoosen', @json
+    store.set "cardsChoosen", @json
+
+  cleanJson: ->
+    $.each @json, (key, value)=>
+      delete @json[key] unless value?

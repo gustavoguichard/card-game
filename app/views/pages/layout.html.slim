@@ -24,9 +24,8 @@
       p.pile-description It’s not what we’re about
 
   .cards-container.row
-    - i = 0
-    - @cards.each do | card |
-      .game-card-container.no-color data-custom-order="#{i}"
+    - @cards.each_with_index do | card, index |
+      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}"
         .game-card
           .card-face.card-front
             header.color-selector
@@ -47,7 +46,6 @@
               a.card-flipper href="#"
                 span Flip card
                 i.entypo-arrows-ccw
-      - i += 1
 
   .footer-count
     span
