@@ -47,13 +47,9 @@
                 span Flip card
                 i.entypo-arrows-ccw
 
-  .footer-count
-    span
-      | You have chosen 
-      i#cards-counter 0
-      |  out of 
-      i#cards-total 47
-      |  possible cards. 
-      a.button.cards-left-bt Cards left
-      | . 
-      a.button.filter data-filter="all" All Cards
+  footer.footer-nav
+    span.footer-count
+      script#cards-counter type="text/template" You have chosen <%= selectedCardsLenght %> out of <%= totalCards %> possible cards.
+    a.button.cards-left-bt Cards left
+    | . 
+    a.button.cards-all-bt All Cards

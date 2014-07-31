@@ -18,3 +18,10 @@ window.DeloitteGame =
 
   modules: -> []
     # Some modules that will be used on every page.
+
+DeloitteGame.Models ?= {}
+DeloitteGame.Views ?= {}
+DeloitteGame.Collections ?= {}
+DeloitteGame.Helpers ?= {}
+DeloitteGame.Router ?= {}
+DeloitteGame.EventDispatcher = _.extend {}, Backbone.Events
