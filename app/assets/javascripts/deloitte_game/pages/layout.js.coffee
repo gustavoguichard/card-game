@@ -111,7 +111,7 @@ class DeloitteGame.Views.GameCard extends Backbone.View
 
   starCard: =>
     @model.toggleStarred()
-    DeloitteGame.EventDispatcher.trigger 'card:colorclicked'
+    DeloitteGame.EventDispatcher.trigger 'card:colorclicked', @model
 
   clearClasses: =>
     @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed starred'
@@ -166,8 +166,8 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
   updateVisibleCards: (filter)=>
     @set 'visibleCards', filter
 
-  checkPageDone: =>
-    if @get('selectedCardsLength') == @get('totalCardsOfView')
+  checkPageDone: (card = null)=>
+    if @get('selectedCardsLength') == @get('totalCardsOfView') && (!card or card.get('starred') == true)
       DeloitteGame.EventDispatcher.trigger 'page:done'
       @nextPage()
 
