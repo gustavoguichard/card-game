@@ -38,8 +38,9 @@ DeloitteGame.Pages.Game =
     pilesContainerModel = new DeloitteGame.Models.PilesContainer
     @pilesContainer = new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
     # GAME MODEL
+    window.navigationModel = new DeloitteGame.Models.GameNavigation()
     for arrow in $('.arrow-nav')
-      new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: window.cardsContainerModel})
+      new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: navigationModel})
     new DeloitteGame.Views.WindowControll {el: $(window)}
 
 # GAME CARD CLASSES
@@ -144,6 +145,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     @updateTotalCards()
 
   updatePageCards: =>
+    DeloitteGame.EventDispatcher.trigger 'page:changed', @get('currentView')
     if @get('currentView') is 'home'
       @set 'visibleCards', 'all'
     else
@@ -245,7 +247,7 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
 # RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
 class DeloitteGame.Views.FooterCounter extends Backbone.View
   tagName: 'span'
-  template: _.template($('#cards-counter').html())
+  template: Handlebars.compile($('#cards-counter').html())
 
   initialize: ->
     @model.on 'change', @render
@@ -267,16 +269,6 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
     false
 
-class DeloitteGame.Views.PageArrowNav extends Backbone.View
-  events:
-    'click': 'changeScreen'
-
-  changeScreen: (e)=>
-    if @$el.data('direction') == 'prev'
-      @model.prevPage()
-    else
-      @model.nextPage()
-
 class DeloitteGame.Views.WindowControll extends Backbone.View
   events:
     'scroll': 'updatedScrollPos'
@@ -293,3 +285,43 @@ class DeloitteGame.Views.WindowControll extends Backbone.View
     else if top <= @tbPos and @topBarStuck
       @topBarStuck = false
       DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
+
+class DeloitteGame.Models.GameNavigation extends Backbone.Model
+  defaults:
+    nextLinkTitle: 'Next Pile'
+    prevLinkTitle: 'Introduction'
+    nextLinkUrl: '#'
+    prevLinkUrl: 'http://google.com'
+
+  initialize: ->
+    DeloitteGame.EventDispatcher.on 'page:changed', @pageChanged
+    @screens = ['home', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
+    @prevLinks = ['http://google.com', '#', '#core', '#adjacent', '#aspirational']
+    @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/participant/new']
+    @prevTitles = ['Introduction', 'All Cards', 'Previous Pile', 'Previous Pile', 'Previous Pile']
+    @nextTitles = ['Next Pile', 'Next Pile', 'Next Pile', 'Next Pile', 'Registration']
+
+  pageChanged: (page)=>
+    console.log page
+    index = $.inArray(page, @screens)
+    @set {nextLinkTitle: @nextTitles[index], prevLinkTitle: @prevTitles[index], nextLinkUrl: @nextLinks[index], prevLinkUrl: @prevLinks[index]}
+    
+class DeloitteGame.Views.PageArrowNav extends Backbone.View
+  tagName: 'aside'
+  template: null
+  events:
+    'click': 'changeScreen'
+
+  initialize: ->
+    @model.on 'change', @render
+    @template = Handlebars.compile($("##{@$el.data('direction')}-arrow-template").html())
+    @render()
+
+  render: =>
+    @$el.html @template(@model.toJSON())
+
+  changeScreen: (e)=>
+    if @$el.data('direction') == 'prev'
+      window.cardsContainerModel.prevPage()
+    else
+      window.cardsContainerModel.nextPage()

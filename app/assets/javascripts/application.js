@@ -18,6 +18,7 @@
 //= require underscore/underscore
 //= require backbone/backbone
 //= require backbone.localStorage/backbone.localStorage
+//= require handlebars/handlebars
 //= require deloitte_game/deloitte_game.js
 //= require init.js
 //= require_tree .
