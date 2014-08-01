@@ -30,10 +30,9 @@ DeloitteGame.Pages.Game =
     # CARDS CONTAINER AND COUNT
     cardsLength = $cards.length
     window.cardsContainerModel = new DeloitteGame.Models.GameCardsContainer {totalCards: cardsLength}
-    @footerCount = new DeloitteGame.Views.FooterCounter({el: $('.footer-count').first(), model: window.cardsContainerModel})
+    @footerCount = new DeloitteGame.Views.FooterCounter({el: $('.counter-nav').first(), model: window.cardsContainerModel})
     @gameCardsContainer = new DeloitteGame.Views.GameCardsContainer({el: $('.cards-container').first(), model: window.cardsContainerModel})
     # CONTROLS
-    @footerNav = new DeloitteGame.Views.FooterNav({el: $('.footer-nav').first(), model: window.cardsContainerModel})
     # PILES CONTAINER
     pilesContainerModel = new DeloitteGame.Models.PilesContainer
     @pilesContainer = new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
@@ -41,6 +40,7 @@ DeloitteGame.Pages.Game =
     window.navigationModel = new DeloitteGame.Models.GameNavigation()
     for arrow in $('.arrow-nav')
       new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: navigationModel})
+    new DeloitteGame.Views.FooterNav({el: $('.footer-nav-next').first(), model: navigationModel})
     new DeloitteGame.Views.WindowControll {el: $(window)}
 
 # GAME CARD CLASSES
@@ -135,21 +135,24 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     selectedCardsLength: 0
     totalCardsOfView: 0
     totalCards: 0
+    isHome: true
+    finishedView: false
 
   initialize: ->
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
     @on 'change:currentView', @updatePageCards
+    @on 'change:finishedView', @triggerFinishedView
     DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
     DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
     DeloitteGame.EventDispatcher.on 'card:colorclicked', @checkPageDone
     @updateTotalCards()
 
   updatePageCards: =>
-    DeloitteGame.EventDispatcher.trigger 'page:changed', @get('currentView')
+    DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
     if @get('currentView') is 'home'
-      @set 'visibleCards', 'all'
+      @set {visibleCards: 'all', isHome: true}
     else
-      @set 'visibleCards', ".#{DeloitteGame.Helpers.getColorFromPile(@get('currentView'))}"
+      @set {visibleCards: ".#{DeloitteGame.Helpers.getColorFromPile(@get('currentView'))}", isHome: false}
     @updateTotalCards()
 
   updateTotalCards: =>
@@ -158,6 +161,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     else
       @set 'totalCardsOfView', 5
       @trigger 'change:totalCardsOfView'
+    @checkPageDone(false)
 
   updateSelectedCardsLength: =>
     if @get('currentView') is 'home'
@@ -171,8 +175,10 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
 
   checkPageDone: (card = null)=>
     if @get('selectedCardsLength') == @get('totalCardsOfView') && (!card or card.get('starred') == true)
-      DeloitteGame.EventDispatcher.trigger 'page:done'
-      @nextPage()
+      @set 'finishedView', true
+      @nextPage() unless card is false
+    else
+      @set 'finishedView', false
 
   nextPage: =>
     view = DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), 1)
@@ -186,6 +192,8 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
       @set 'currentView', view
       false
 
+  triggerFinishedView: =>
+    DeloitteGame.EventDispatcher.trigger 'view:done', @get('finishedView')
 
 class DeloitteGame.Views.GameCardsContainer extends Backbone.View
   initialize: ->
@@ -248,6 +256,9 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
 class DeloitteGame.Views.FooterCounter extends Backbone.View
   tagName: 'span'
   template: Handlebars.compile($('#cards-counter').html())
+  events:
+    'click .cards-left-bt': 'leftCards'
+    'click .cards-all-bt': 'allCards'
 
   initialize: ->
     @model.on 'change', @render
@@ -255,11 +266,6 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
 
   render: =>
     @$el.html @template(@model.toJSON())
-
-class DeloitteGame.Views.FooterNav extends Backbone.View
-  events: ->
-    'click .cards-left-bt': 'leftCards'
-    'click .cards-all-bt': 'allCards'
 
   leftCards: (e)=>
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', '.no-color'
@@ -269,43 +275,50 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
     false
 
-class DeloitteGame.Views.WindowControll extends Backbone.View
-  events:
-    'scroll': 'updatedScrollPos'
-
-  initialize: ->
-    @topBarStuck = false
-    @tbPos = $('#sticky-wrapper').offset().top
-
-  updatedScrollPos: =>
-    top = @$el.scrollTop()
-    if top >= @tbPos and !@topBarStuck
-      @topBarStuck = true
-      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
-    else if top <= @tbPos and @topBarStuck
-      @topBarStuck = false
-      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
-
 class DeloitteGame.Models.GameNavigation extends Backbone.Model
   defaults:
     nextLinkTitle: 'Next Pile'
     prevLinkTitle: 'Introduction'
     nextLinkUrl: '#'
     prevLinkUrl: 'http://google.com'
+    currentView: 'home'
+    isViewDone: false
 
   initialize: ->
-    DeloitteGame.EventDispatcher.on 'page:changed', @pageChanged
+    DeloitteGame.EventDispatcher.on 'view:changed', @viewChanged
+    DeloitteGame.EventDispatcher.on 'view:done', @viewDone
+    @on 'change:currentView', @updateAttrs
     @screens = ['home', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
     @prevLinks = ['http://google.com', '#', '#core', '#adjacent', '#aspirational']
     @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/participant/new']
     @prevTitles = ['Introduction', 'All Cards', 'Previous Pile', 'Previous Pile', 'Previous Pile']
     @nextTitles = ['Next Pile', 'Next Pile', 'Next Pile', 'Next Pile', 'Registration']
 
-  pageChanged: (page)=>
-    console.log page
-    index = $.inArray(page, @screens)
+  viewChanged: (page)=>
+    @set 'currentView', page
+
+  viewDone: (done)=>
+    @set 'isViewDone', done
+
+  updateAttrs: =>
+    index = $.inArray(@get('currentView'), @screens)
     @set {nextLinkTitle: @nextTitles[index], prevLinkTitle: @prevTitles[index], nextLinkUrl: @nextLinks[index], prevLinkUrl: @prevLinks[index]}
     
+class DeloitteGame.Views.FooterNav extends Backbone.View
+  template: Handlebars.compile($("#footer-nav-next").html())
+  events:
+    'click': 'changeScreen'
+
+  initialize: ->
+    @model.on 'change', @render
+    @render()
+
+  render: =>
+    @$el.html @template(@model.toJSON())
+
+  changeScreen: =>
+    window.cardsContainerModel.nextPage()
+
 class DeloitteGame.Views.PageArrowNav extends Backbone.View
   tagName: 'aside'
   template: null
@@ -325,3 +338,20 @@ class DeloitteGame.Views.PageArrowNav extends Backbone.View
       window.cardsContainerModel.prevPage()
     else
       window.cardsContainerModel.nextPage()
+
+class DeloitteGame.Views.WindowControll extends Backbone.View
+  events:
+    'scroll': 'updatedScrollPos'
+
+  initialize: ->
+    @topBarStuck = false
+    @tbPos = $('#sticky-wrapper').offset().top
+
+  updatedScrollPos: =>
+    top = @$el.scrollTop()
+    if top >= @tbPos and !@topBarStuck
+      @topBarStuck = true
+      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
+    else if top <= @tbPos and @topBarStuck
+      @topBarStuck = false
+      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'

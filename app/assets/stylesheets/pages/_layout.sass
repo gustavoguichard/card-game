@@ -103,19 +103,35 @@
     .first-letter
       display: block
 
-.footer-nav
+.counter-nav
   background: white
   +stick-to(bottom, fixed)
   padding: 20px 0
   box-shadow: 0 -1px 3px rgba(black,.3)
-  &.green-color
-    background-color: $game-green
-  &.blue-color
-    background-color: $game-blue
-  &.orange-color
-    background-color: $game-orange
-  &.purple-color
-    background-color: $game-purple
+
+.footer-nav-next
+  .navigator
+    background: $game-dark
+    color: white
+    padding: 20px 0
+    position: fixed
+    left: 0
+    right: 0
+    bottom: -100px
+    +transition(all .5s)
+    a
+      color: inherit
+    &.done
+      bottom: 0
+    &.core
+      background-color: $game-blue
+    &.adjacent
+      background-color: $game-green
+    &.out-of-bounds
+      background-color: $game-orange
+    &.aspirational
+      background-color: $game-purple
+
 
 #floating-pile-description
   position: absolute
