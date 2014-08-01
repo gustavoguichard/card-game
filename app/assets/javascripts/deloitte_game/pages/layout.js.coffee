@@ -26,7 +26,7 @@ DeloitteGame.Pages.Game =
       for card in $cards
         model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id')})
         @cardsList.create model
-    @cardsCollectionView = new DeloitteGame.Views.GameCardsCollection({collection: @cardsList})
+    window.cardsCollectionView = new DeloitteGame.Views.GameCardsCollection({collection: @cardsList})
     # CARDS CONTAINER AND COUNT
     cardsLength = $cards.length
     window.cardsContainerModel = new DeloitteGame.Models.GameCardsContainer {totalCards: cardsLength}
@@ -100,12 +100,6 @@ class DeloitteGame.Views.GameCard extends Backbone.View
     'click .starred-circle': 'starCard'
   initialize: ->
     @model.on 'change:color change:starred', @render
-    # @$el.draggable(
-    #   revert: true
-    #   revertDuration: 300
-    #   helper: "clone"
-    #   cursor: "move"
-    # )
     @render()
 
   render: =>
@@ -244,14 +238,6 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
   clearClasses: =>
     @$('.cards-pile').removeClass 'open-pile'
     @floatingPileDescrition.removeClass 'open core adjacent out-of-bounds aspirational'
-
-  # bindDropping: =>
-  #   for pile in @$('.cards-pile')
-  #     $(pile).droppable(
-  #       hoverClass: "ui-droppable-hover"
-  #       drop: ( event, ui )->
-  #         DeloitteGame.EventDispatcher.trigger('card:changed', $(ui.helper[0]).data('card-id'), $(this).data('pile'))
-  #     )
 
 # RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
 class DeloitteGame.Views.FooterCounter extends Backbone.View

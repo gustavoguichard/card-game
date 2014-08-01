@@ -12,11 +12,6 @@
 //
 //= require jquery/dist/jquery
 //= require jquery-ujs/src/rails
-//= require jquery-ui/ui/core
-//= require jquery-ui/ui/widget
-//= require jquery-ui/ui/mouse
-//= require jquery-ui/ui/draggable
-//= require jquery-ui/ui/droppable
 //= require jquery-waypoints/waypoints
 //= require jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky
 //= require mixitup/build/jquery.mixitup.min
