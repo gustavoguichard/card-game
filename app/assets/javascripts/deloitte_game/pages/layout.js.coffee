@@ -184,7 +184,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
       false
 
   prevPage: =>
-    DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), -1)
+    view = DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), -1)
     if view
       @set 'currentView', view
       false
