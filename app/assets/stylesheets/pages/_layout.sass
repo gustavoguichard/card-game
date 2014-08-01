@@ -24,7 +24,10 @@
   +transition(.3s)
   @media only screen and (max-width: 1012px)
     width: 100%
-  &.stuck
+
+#sticky-wrapper.stuck
+  height: 210px
+  .piles-container
     position: fixed
     top: 0
     left: 0
@@ -33,6 +36,7 @@
     max-width: 100%
     .cards-pile
       +full-width-piles
+
 
 .cards-pile
   box-shadow: 0 0 0 1px $game-dark

@@ -40,6 +40,7 @@ DeloitteGame.Pages.Game =
     # GAME MODEL
     for arrow in $('.arrow-nav')
       new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: window.cardsContainerModel})
+    new DeloitteGame.Views.WindowControll {el: $(window)}
 
 # GAME CARD CLASSES
 class DeloitteGame.Models.GameCard extends Backbone.Model
@@ -217,9 +218,8 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
   events:
     'click .cards-pile': 'cardsPileClicked'
   initialize: ->
+    DeloitteGame.EventDispatcher.on 'window:stucktoggle', @toggleStuck
     @$el.append('<div id="floating-pile-description">')
-    @$el.waypoint('sticky')
-    # @bindDropping()
     @floatingPileDescrition = @$('#floating-pile-description')
     @model.on 'change', @render
 
@@ -238,6 +238,9 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
   clearClasses: =>
     @$('.cards-pile').removeClass 'open-pile'
     @floatingPileDescrition.removeClass 'open core adjacent out-of-bounds aspirational'
+
+  toggleStuck: =>
+    @$el.parent().toggleClass('stuck')
 
 # RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
 class DeloitteGame.Views.FooterCounter extends Backbone.View
@@ -273,3 +276,20 @@ class DeloitteGame.Views.PageArrowNav extends Backbone.View
       @model.prevPage()
     else
       @model.nextPage()
+
+class DeloitteGame.Views.WindowControll extends Backbone.View
+  events:
+    'scroll': 'updatedScrollPos'
+
+  initialize: ->
+    @topBarStuck = false
+    @tbPos = $('#sticky-wrapper').offset().top
+
+  updatedScrollPos: =>
+    top = @$el.scrollTop()
+    if top >= @tbPos and !@topBarStuck
+      @topBarStuck = true
+      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
+    else if top <= @tbPos and @topBarStuck
+      @topBarStuck = false
+      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'

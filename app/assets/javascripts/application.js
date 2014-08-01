@@ -12,8 +12,6 @@
 //
 //= require jquery/dist/jquery
 //= require jquery-ujs/src/rails
-//= require jquery-waypoints/waypoints
-//= require jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky
 //= require mixitup/build/jquery.mixitup.min
 //= require foundation
 //= require turbolinks
