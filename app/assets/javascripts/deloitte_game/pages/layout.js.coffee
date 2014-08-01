@@ -17,14 +17,14 @@ DeloitteGame.Pages.Game =
       for card in $cards
         model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id')})
         @cardsList.create model
-    window.cardsCollectionView = new DeloitteGame.Views.GameCardsCollection({collection: @cardsList})
+    @cardsCollectionView = new DeloitteGame.Views.GameCardsCollection({collection: @cardsList})
     # CARDS CONTAINER AND COUNT
     cardsLength = $cards.length
-    cardsContainerModel = new DeloitteGame.Models.GameCardsContainer {totalCards: cardsLength}
-    @footerCount = new DeloitteGame.Views.FooterCounter({el: $('.footer-count').first(), model: cardsContainerModel})
-    @gameCardsContainer = new DeloitteGame.Views.GameCardsContainer({el: $('.cards-container').first(), model: cardsContainerModel})
+    window.cardsContainerModel = new DeloitteGame.Models.GameCardsContainer {totalCards: cardsLength}
+    @footerCount = new DeloitteGame.Views.FooterCounter({el: $('.footer-count').first(), model: window.cardsContainerModel})
+    @gameCardsContainer = new DeloitteGame.Views.GameCardsContainer({el: $('.cards-container').first(), model: window.cardsContainerModel})
     # CONTROLS
-    @footerNav = new DeloitteGame.Views.FooterNav({el: $('.footer-nav').first(), model: cardsContainerModel})
+    @footerNav = new DeloitteGame.Views.FooterNav({el: $('.footer-nav').first(), model: window.cardsContainerModel})
     # PILES CONTAINER
     pilesContainerModel = new DeloitteGame.Models.PilesContainer
     @pilesContainer = new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
@@ -41,24 +41,35 @@ class DeloitteGame.Models.GameCard extends Backbone.Model
 
   initialize: ->
     @on 'change:pile', @changeColor
+    @on 'change', @saveModel
+
+  saveModel: ->
+    @save()
+    DeloitteGame.EventDispatcher.trigger 'card:changed'
 
   updatePile: (pile)=>
-    if pile is @get('pile') then @save({pile: null}) else @save({pile: pile})
+    if pile is @get('pile') then @set('pile', null) else @set('pile', pile)
 
   changeColor: =>
     if @get('pile')
       color = DeloitteGame.Helpers.getColorFromPile(@get('pile'))
-      @save {color: color}
+      @set('color', color)
     else
-      @save {color: 'no-color'}
+      @set('color', 'no-color')
 
   toggleStarred: =>
-    @save {starred: !@get("starred")}
+    @set 'starred', !@get("starred")
 
 class DeloitteGame.Collections.GameCards extends Backbone.Collection
   model: DeloitteGame.Models.GameCard
   localStorage: new Backbone.LocalStorage "gameCards"
   comparator: 'id'
+  initialize: ->
+    @on 'change:starred', @checkMaximumStarred
+
+  checkMaximumStarred: (card)->
+    otherCards = @where {starred: true, pile: card.get('pile')}
+    card.set('starred', false) if otherCards.length > 5
 
 class DeloitteGame.Views.GameCardsCollection extends Backbone.View
   el: '.cards-container'
@@ -78,7 +89,7 @@ class DeloitteGame.Views.GameCard extends Backbone.View
     'click .card-flipper': 'flipCard'
     'click .starred-circle': 'starCard'
   initialize: ->
-    @model.on 'change:color', @render
+    @model.on 'change:color change:starred', @render
     # @$el.draggable(
     #   revert: true
     #   revertDuration: 300
@@ -92,13 +103,13 @@ class DeloitteGame.Views.GameCard extends Backbone.View
     @$el.addClass @model.get('color')
     @$el.addClass('color-choosed') if @model.get('pile')
     @$(".select-color.#{@model.get('color')}").addClass 'selected'
+    @$el.addClass 'starred' if @model.get('starred')
 
   starCard: =>
     @model.toggleStarred()
-    @$el.toggleClass 'starred'
 
   clearClasses: =>
-    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed'
+    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed starred'
     @$('.select-color').removeClass 'selected'
 
   colorClicked: (e)=>
@@ -107,17 +118,6 @@ class DeloitteGame.Views.GameCard extends Backbone.View
   flipCard: (e)=>
     @$el.find('.game-card').toggleClass 'flipped'
     false    
-
-class DeloitteGame.Collections.GameCards extends Backbone.Collection
-  model: DeloitteGame.Models.GameCard
-  localStorage: new Backbone.LocalStorage "gameCards"
-  initialize: ->
-    # new DeloitteGame.Views.GameCard({el: $(card), model: model})  
-
-  createModelsFromCards: ->
-    for card in $('.game-card-container')
-      model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id')})
-      @add model
 
 # CLASSES FOR CARDS CONTAINER, RESPONSIBLE FOR MIXING CARDS AND COUNTING THEM
 class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
@@ -130,29 +130,27 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
 
   initialize: ->
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
-    DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisible
-    DeloitteGame.EventDispatcher.on 'json:changed', @updateSelectedCardsLength
-    DeloitteGame.EventDispatcher.on 'page:changed', @updatePageCards
+    @on 'change:currentView', @updatePageCards
+    DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
     @updateTotalCards()
 
-  updatePageCards: (page, json)=>
-    @set 'currentView', page
-    if page is 'home'
+  updatePageCards: =>
+    if @get('currentView') is 'home'
       @set 'visibleCards', 'all'
     else
-      @set 'visibleCards', ".#{DeloitteGame.Helpers.getColorFromPile(page)}"
+      @set 'visibleCards', ".#{DeloitteGame.Helpers.getColorFromPile(@get('currentView'))}"
     @updateTotalCards()
 
   updateTotalCards: =>
     if @get('currentView') is 'home'
       @set 'totalCardsOfView', @get('totalCards')
     else
-      # @set 'totalCardsOfView', $(".game-card-container#{@get('visibleCards')}").length
       @set 'totalCardsOfView', 5
+      @trigger 'change:totalCardsOfView'
 
-  updateSelectedCardsLength: (json = {})=>
+  updateSelectedCardsLength: =>
     if @get('currentView') is 'home'
-      @set 'selectedCardsLength', _.size(json)
+      @set 'selectedCardsLength', $('.game-card-container.color-choosed').length
     else
       length = $(".game-card-container#{@get('visibleCards')}.starred").length
       @set 'selectedCardsLength', length
@@ -160,9 +158,6 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
 
   checkPageDone: =>
     DeloitteGame.EventDispatcher.trigger 'page:done' if @get('selectedCardsLength') == @get('totalCardsOfView')
-
-  updateVisible: (filter)=>
-    @set 'visibleCards', filter
 
 class DeloitteGame.Views.GameCardsContainer extends Backbone.View
   initialize: ->
@@ -251,39 +246,3 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
   allCards: (e)=>
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
     false
-
-# TAKES CARE OF DATA OF ENTIRE GAME
-# class DeloitteGame.Models.GameData extends Backbone.Model
-#   defaults:
-#     currentPage: 'home'
-#     selectedCardsLength: 0
-#     totalCards: 0
-#     cardsChoosen: {}
-
-#   initialize: ->
-#     @on 'change:cardsChoosen', @jsonChanged
-#     @on 'change:currentPage', @pageChanged
-#     DeloitteGame.EventDispatcher.on 'card:changed', @pushCard
-#     DeloitteGame.EventDispatcher.on 'card:star', @starCard
-#     @json = @get('cardsChoosen')
-#     @jsonChanged()
-
-#   jsonChanged: =>
-#     DeloitteGame.EventDispatcher.trigger 'json:changed', @json
-
-#   pageChanged: =>
-#     DeloitteGame.EventDispatcher.trigger 'page:changed', @get('currentPage')
-
-#   pushCard: (card, pile)=>
-#     @json[card] = pile
-#     @cleanJson() if @json?
-#     @set 'cardsChoosen', @json
-#     @trigger 'change:cardsChoosen'
-#     store.set "cardsChoosen", @json
-
-#   cleanJson: =>
-#     $.each @json, (key, value)=>
-#       delete @json[key] unless value?
-
-#   starCard: (model)=>
-#     console.log model
