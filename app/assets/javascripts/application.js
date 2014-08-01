@@ -20,11 +20,11 @@
 //= require jquery-waypoints/waypoints
 //= require jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky
 //= require mixitup/build/jquery.mixitup.min
-//= require store.js/store
 //= require foundation
 //= require turbolinks
 //= require underscore/underscore
 //= require backbone/backbone
+//= require backbone.localStorage/backbone.localStorage
 //= require deloitte_game/deloitte_game.js
 //= require init.js
 //= require_tree .
