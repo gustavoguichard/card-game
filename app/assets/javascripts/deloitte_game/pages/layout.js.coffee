@@ -117,6 +117,7 @@ class DeloitteGame.Views.GameCard extends Backbone.View
 
   starCard: =>
     @model.toggleStarred()
+    DeloitteGame.EventDispatcher.trigger 'card:colorclicked'
 
   clearClasses: =>
     @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed starred'
@@ -124,6 +125,7 @@ class DeloitteGame.Views.GameCard extends Backbone.View
 
   colorClicked: (e)=>
     @model.updatePile $(e.currentTarget).data('pile')
+    DeloitteGame.EventDispatcher.trigger 'card:colorclicked'
 
   flipCard: (e)=>
     @$el.find('.game-card').toggleClass 'flipped'
@@ -137,13 +139,13 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     selectedCardsLength: 0
     totalCardsOfView: 0
     totalCards: 0
-    autoNavigate: true
 
   initialize: ->
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
     @on 'change:currentView', @updatePageCards
     DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
     DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
+    DeloitteGame.EventDispatcher.on 'card:colorclicked', @checkPageDone
     @updateTotalCards()
 
   updatePageCards: =>
@@ -166,7 +168,6 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     else
       length = $(".game-card-container#{@get('visibleCards')}.starred").length
       @set 'selectedCardsLength', length
-    @checkPageDone() if @get 'autoNavigate'
 
   updateVisibleCards: (filter)=>
     @set 'visibleCards', filter
@@ -282,7 +283,6 @@ class DeloitteGame.Views.PageArrowNav extends Backbone.View
     'click': 'changeScreen'
 
   changeScreen: (e)=>
-    @model.set 'autoNavigate', false
     if @$el.data('direction') == 'prev'
       @model.prevPage()
     else
