@@ -23,7 +23,7 @@
         span.full-title Out of Bounds
       p.pile-description It’s not what we’re about
 
-  .cards-container.row
+  .cards-container.row.home
     - @cards.each_with_index do | card, index |
       .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}"
         .game-card
@@ -33,6 +33,8 @@
               span.select-color.green-color data-pile="adjacent"
               span.select-color.purple-color data-pile="aspirational"
               span.select-color.orange-color data-pile="out-of-bounds"
+            aside.starred-circle
+              i.entypo-check
             article.card-content
               h5.card-action= card[:action]
               p.card-title= card[:title]
@@ -49,7 +51,8 @@
 
   footer.footer-nav
     span.footer-count
-      script#cards-counter type="text/template" You have chosen <%= selectedCardsLenght %> out of <%= totalCards %> possible cards.
+      script#cards-counter type="text/template" 
+        | You have chosen <%= selectedCardsLength %> out of <%= totalCardsOfView %> possible cards.
     a.button.cards-left-bt Cards left
     | . 
     a.button.cards-all-bt All Cards

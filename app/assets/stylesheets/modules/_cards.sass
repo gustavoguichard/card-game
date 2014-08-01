@@ -19,6 +19,18 @@
   &.orange-color
     .card-face
       box-shadow: 0 0 0 4px $game-orange inset
+  &.starred
+    .starred-circle
+      i
+        color: white
+    &.blue-color .starred-circle
+      background-color: $game-blue
+    &.green-color .starred-circle
+      background-color: $game-green
+    &.purple-color .starred-circle
+      background-color: $game-purple
+    &.orange-color .starred-circle
+      background-color: $game-orange
 
 .game-card
   height: 400px
@@ -49,6 +61,7 @@
     padding: 4px
     +transform(rotateY(180deg))
   .card-front
+    padding-top: 20px
     z-index: 5
   .card-action
     text-transform: uppercase
@@ -56,6 +69,7 @@
     font-weight: 600
     position: relative
     margin-bottom: -2px
+    padding-top: 20px
     &:before, &:after
       content: ""
       display: inline-block
@@ -71,7 +85,10 @@
     padding: 0 20px
 
   .color-selector
-    padding: 20px 0
+    display: none
+    padding: 0
+    +context(".home")
+      display: block
     .select-color
       display: inline-block
       margin: 7px
@@ -98,6 +115,22 @@
         background-color: $game-orange
         &:hover, &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
+  
+  .starred-circle
+    margin: 20px auto 0
+    height: 65px
+    width: 65px
+    border-radius: 100%
+    background-color: lighten($game-medium-gray, 20%)
+    +transition(.3s)
+    +context(".home")
+      display: none
+    i
+      color: transparent
+      font-size: 50px
+      font-weight: bold
+      padding-top: 8px
+      display: block
 
   .card-footer
     +stick-to(bottom)

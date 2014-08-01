@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  def layout
+  def game
     @cards = [
       {id: 1, title: "Lobbying for policy change", action: "Advocating"},
       {id: 2, title: "Influencing government and business priorities", action: "Advocating"},
