@@ -38,7 +38,8 @@ DeloitteGame.Pages.Game =
     pilesContainerModel = new DeloitteGame.Models.PilesContainer
     @pilesContainer = new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
     # GAME MODEL
-    # window.gameData = new DeloitteGame.Models.GameData {cardsChoosen: gameJson}
+    for arrow in $('.arrow-nav')
+      new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: window.cardsContainerModel})
 
 # GAME CARD CLASSES
 class DeloitteGame.Models.GameCard extends Backbone.Model
@@ -136,6 +137,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     selectedCardsLength: 0
     totalCardsOfView: 0
     totalCards: 0
+    autoNavigate: true
 
   initialize: ->
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
@@ -164,7 +166,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     else
       length = $(".game-card-container#{@get('visibleCards')}.starred").length
       @set 'selectedCardsLength', length
-    @checkPageDone()
+    @checkPageDone() if @get 'autoNavigate'
 
   updateVisibleCards: (filter)=>
     @set 'visibleCards', filter
@@ -176,11 +178,15 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
 
   nextPage: =>
     view = DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), 1)
-    @set 'currentView', view if view
+    if view
+      @set 'currentView', view
+      false
 
   prevPage: =>
     DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), -1)
-    @set 'currentView', view if view
+    if view
+      @set 'currentView', view
+      false
 
 
 class DeloitteGame.Views.GameCardsContainer extends Backbone.View
@@ -270,3 +276,14 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
   allCards: (e)=>
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
     false
+
+class DeloitteGame.Views.PageArrowNav extends Backbone.View
+  events:
+    'click': 'changeScreen'
+
+  changeScreen: (e)=>
+    @model.set 'autoNavigate', false
+    if @$el.data('direction') == 'prev'
+      @model.prevPage()
+    else
+      @model.nextPage()
