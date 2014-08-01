@@ -5,6 +5,15 @@ DeloitteGame.Helpers.getColorFromPile = (pile)->
   newColor = colorOpts[index]
   return "#{newColor}-color"
 
+DeloitteGame.Helpers.gameNavigationOrder = (current, direction)->
+  screens = ['home', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
+  index = $.inArray(current, screens)
+  newIndex = index + direction
+  if newIndex >= 0 or newIndex <= screens.length
+    screens[newIndex]
+  else
+    false
+
 DeloitteGame.Pages ?= {}
 
 # METHOD TO INITIALIZE JS OF PAGE
@@ -131,6 +140,7 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
   initialize: ->
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
     @on 'change:currentView', @updatePageCards
+    DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
     DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
     @updateTotalCards()
 
@@ -156,8 +166,22 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
       @set 'selectedCardsLength', length
     @checkPageDone()
 
+  updateVisibleCards: (filter)=>
+    @set 'visibleCards', filter
+
   checkPageDone: =>
-    DeloitteGame.EventDispatcher.trigger 'page:done' if @get('selectedCardsLength') == @get('totalCardsOfView')
+    if @get('selectedCardsLength') == @get('totalCardsOfView')
+      DeloitteGame.EventDispatcher.trigger 'page:done'
+      @nextPage()
+
+  nextPage: =>
+    view = DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), 1)
+    @set 'currentView', view if view
+
+  prevPage: =>
+    DeloitteGame.Helpers.gameNavigationOrder(@get('currentView'), -1)
+    @set 'currentView', view if view
+
 
 class DeloitteGame.Views.GameCardsContainer extends Backbone.View
   initialize: ->
