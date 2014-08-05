@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery/dist/jquery
-//= require jquery-ujs/src/rails
 //= require mixitup/build/jquery.mixitup.min
 //= require foundation
 //= require turbolinks
@@ -20,7 +19,5 @@
 //= require backbone.localStorage/backbone.localStorage
 //= require handlebars/handlebars
 //= require deloitte_game/deloitte_game.js
-//= require init.js
-//= require_tree .
 
-$(function(){ $(document).foundation(); });
+// $(function(){ $(document).foundation(); });

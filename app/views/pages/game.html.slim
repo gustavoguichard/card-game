@@ -24,7 +24,7 @@
           span.full-title Out of Bounds
         p.pile-description It’s not what we’re about
 
-  .cards-container.row.home
+  .cards-container.row.game
     - @cards.each_with_index do | card, index |
       .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}"
         .game-card

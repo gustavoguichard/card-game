@@ -40,7 +40,6 @@
   color: $game-dark
   position: relative
   vertical-align: top
-  overflow: hidden
   +transform-style
   +transition(transform .6s)
   &.ui-draggable-dragging
@@ -55,6 +54,7 @@
   .card-face
     box-shadow: 0 0 0 1px $game-dark inset
     background: white
+    overflow: hidden
     +expand-to-fit
     +transition(.2s)
     +backface-visibility(hidden)
@@ -96,7 +96,7 @@
     right: 0
     opacity: 0
     +transition(all .7s)
-    +context(".home")
+    +context(".game")
       top: 30px
       opacity: 1
       +transition-delay(.5s)
@@ -139,7 +139,7 @@
     top: 20px
     +absolute-centering($size)
     +transition(.3s)
-    +context(".home")
+    +context(".game")
       top: -100px
       opacity: 0
     i
