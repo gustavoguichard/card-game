@@ -40,7 +40,7 @@
   color: $game-dark
   position: relative
   vertical-align: top
-  +transform-style
+  +transform-style(preserve-3d)
   +transition(transform .6s)
   &.ui-draggable-dragging
     opacity: .6
@@ -107,7 +107,7 @@
       width: rem-calc(27)
       border-radius: 50%
       cursor: pointer
-      +transition(.2s)
+      +transition(.7s)
       &.selected
         opacity: 1
       &.blue-color

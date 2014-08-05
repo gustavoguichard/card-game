@@ -161,8 +161,8 @@ class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
     if @get('currentView') is 'game'
       @set 'totalCardsOfView', @get('totalCards')
     else
-      @set 'totalCardsOfView', 5
-      @trigger 'change:totalCardsOfView'
+      @set 'totalCardsOfView', Math.min(5, $(".game-card-container#{@get('visibleCards')}").length)
+    @trigger 'change:totalCardsOfView'
     @checkPageDone()
 
   updateSelectedCardsLength: =>
