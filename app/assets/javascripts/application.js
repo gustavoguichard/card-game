@@ -16,7 +16,7 @@
 //= require turbolinks
 //= require underscore/underscore
 //= require backbone/backbone
-//= require backbone.localStorage/backbone.localStorage
+//= require lib/backbone-localStorage-min
 //= require handlebars/handlebars
 //= require deloitte_game/deloitte_game.js
 
