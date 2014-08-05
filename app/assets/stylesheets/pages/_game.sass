@@ -135,13 +135,15 @@ h1, h2, h3, h4, h5, h6, p
   .navigator
     background: $game-dark
     color: white
-    padding: 20px 0
     position: fixed
     left: 0
     right: 0
     bottom: -100px
     +transition(all .5s)
     a
+      display: block
+      width: 100%
+      padding: 20px 0
       color: inherit
     &.done
       bottom: 0
