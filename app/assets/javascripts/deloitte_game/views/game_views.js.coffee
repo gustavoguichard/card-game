@@ -48,7 +48,6 @@ class DeloitteGame.Views.GameCard extends Backbone.View
 class DeloitteGame.Views.GameState extends Backbone.View
   initialize: ->
     @model.on 'change:visibleCards', @sortCards
-    @model.on 'change:currentView', @changeContainerClass
     filter = DeloitteGame.Helpers.getColorClassFromView(Backbone.history.fragment)
     @$el.mixItUp
         animation:
@@ -62,10 +61,6 @@ class DeloitteGame.Views.GameState extends Backbone.View
 
   sortCards: =>
     @$el.mixItUp 'filter', @model.get('visibleCards')
-
-  changeContainerClass: =>
-    @$el.removeClass 'game core adjacent aspirational out-of-bounds'
-    @$el.addClass @model.get('currentView')
 
 # RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING
 # TO TOP AND OPENING DESCRIPTIONS WHEN IN SMALL SCREENS
@@ -147,7 +142,14 @@ class DeloitteGame.Views.WindowControll extends Backbone.View
     'scroll': 'updatedScrollPos'
 
   initialize: ->
+    @model.on 'change', @render
     @topBarStuck = false
+    @topBarPosition = $('#sticky-wrapper').offset().top
+    @render()
+
+  render: =>
+    $('body').removeClass 'game core adjacent aspirational out-of-bounds'
+    $('body').addClass @model.get('currentView')
     @topBarPosition = $('#sticky-wrapper').offset().top
 
   updatedScrollPos: =>

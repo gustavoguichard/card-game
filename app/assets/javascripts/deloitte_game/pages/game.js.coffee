@@ -43,7 +43,7 @@ DeloitteGame.Pages.Game =
     # Instantiates Footer navigation that shows up when user has finished a view
     new DeloitteGame.Views.FooterNav({el: $('.footer-nav-next').first(), model: navigationModel})
     # Instantiates a window controller to listen to the global window events
-    new DeloitteGame.Views.WindowControll {el: $(window)}
+    new DeloitteGame.Views.WindowControll {el: $(window), model: gameStateModel}
     # Goes to #game view if it's in root path, otherwise it tells the current view to the game
     if Backbone.history.fragment == ''
       Backbone.history.navigate 'game', {trigger: true}
