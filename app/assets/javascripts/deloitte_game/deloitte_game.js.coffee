@@ -1,5 +1,5 @@
 #= require_self
-#= require_tree .
+#= require_tree ./pages
 
 window.DeloitteGame ?= {}
 DeloitteGame.Models ?= {}
@@ -7,6 +7,7 @@ DeloitteGame.Views ?= {}
 DeloitteGame.Collections ?= {}
 DeloitteGame.Helpers ?= {}
 DeloitteGame.Router ?= {}
+DeloitteGame.Pages ?= {}
 DeloitteGame.EventDispatcher = _.extend {}, Backbone.Events
 DeloitteGame.PageStarted = false
 

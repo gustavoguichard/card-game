@@ -1,345 +1,51 @@
-DeloitteGame.Helpers.getColorFromPile = (pile)->
-  colorOpts = ['blue', 'green', 'purple', 'orange']
-  pileOpts = ['core', 'adjacent', 'aspirational', 'out-of-bounds']
-  index = $.inArray(pile, pileOpts)
-  newColor = colorOpts[index]
-  return "#{newColor}-color"
+#= require_tree ../helpers
+#= require_tree ../models
+#= require_tree ../collections
+#= require_tree ../views
+#= require_tree ../routers
 
-DeloitteGame.Helpers.getColorClassFromView = (view)->
-  if view is 'game' or view is ''
-    return 'all'
-  else
-    return ".#{DeloitteGame.Helpers.getColorFromPile(view)}"
-
-DeloitteGame.Pages ?= {}
-
-# METHOD TO INITIALIZE JS OF PAGE
+################################################################################
+# MAIN JS THAT CONTROLS EACH PAGE
+################################################################################
 DeloitteGame.Pages.Game = 
   init: ->
+    # Initializes Backbone Routes
     new DeloitteGame.Router
     Backbone.history.start() unless Backbone.History.started
+    # Creates a collection of cards and if there is no saved cards,
+    # it instantiates one card model for each HTML Card and puts it in the collection
     $cards = $('.game-card-container')
-    @cardsList = new DeloitteGame.Collections.GameCards
-    @cardsList.fetch()
-    unless @cardsList.length is $cards.length
+    cardsList = new DeloitteGame.Collections.GameCards
+    # Get's saved cards from localStorage
+    cardsList.fetch()
+    unless cardsList.length is $cards.length
       for card in $cards
         model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id')})
-        @cardsList.create model
-    window.cardsCollectionView = new DeloitteGame.Views.GameCardsCollection({collection: @cardsList})
+        cardsList.create model
+    # Instantiates the view to the collection of cards
+    new DeloitteGame.Views.GameCardsCollection({collection: cardsList})
+    # Instantiates the model that controlls navigation between views
     navigationModel = new DeloitteGame.Models.GameNavigation()
-    # CARDS CONTAINER AND COUNT
+    # Instantiates the Game Model that controlls the game state, visible cards and
+    # if each stage is completed
     cardsLength = $cards.length
-    window.cardsContainerModel = new DeloitteGame.Models.GameCardsContainer {totalCards: cardsLength}
-    @footerCount = new DeloitteGame.Views.FooterCounter({el: $('.counter-nav').first(), model: window.cardsContainerModel})
-    @gameCardsContainer = new DeloitteGame.Views.GameCardsContainer({el: $('.cards-container').first(), model: window.cardsContainerModel})
-    # CONTROLS
-    # PILES CONTAINER
+    gameStateModel = new DeloitteGame.Models.GameState {totalCards: cardsLength}
+    new DeloitteGame.Views.GameState({el: $('.cards-container').first(), model: gameStateModel})
+    # Instantiates the footer cards counter controlled by Game Model
+    new DeloitteGame.Views.FooterCounter({el: $('.counter-nav').first(), model: gameStateModel})
+    # Instantiates Model and View for the piles controller, responsible for sticking it to top
+    # and opening it's instructions
     pilesContainerModel = new DeloitteGame.Models.PilesContainer
-    @pilesContainer = new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
-    # GAME MODEL
+    new DeloitteGame.Views.PilesContainer({el: $('.piles-container').first(), model: pilesContainerModel})
+    # Instantiates the prev and next arrows
     for arrow in $('.arrow-nav')
       new DeloitteGame.Views.PageArrowNav({el: $(arrow), model: navigationModel})
+    # Instantiates Footer navigation that shows up when user has finished a view
     new DeloitteGame.Views.FooterNav({el: $('.footer-nav-next').first(), model: navigationModel})
+    # Instantiates a window controller to listen to the global window events
     new DeloitteGame.Views.WindowControll {el: $(window)}
+    # Goes to #game view if it's in root path, otherwise it tells the current view to the game
     if Backbone.history.fragment == ''
       Backbone.history.navigate 'game', {trigger: true}
     else
       DeloitteGame.EventDispatcher.trigger 'router:changed', Backbone.history.fragment
-
-
-# GAME CARD CLASSES
-class DeloitteGame.Models.GameCard extends Backbone.Model
-  defaults:
-    id: null
-    pile: null
-    color: "no-color"
-    starred: false
-
-  initialize: ->
-    @on 'change:pile', @changeColor
-    @on 'change', @saveModel
-
-  saveModel: ->
-    @save()
-    DeloitteGame.EventDispatcher.trigger 'card:changed'
-
-  updatePile: (pile)=>
-    if pile is @get('pile') then @set('pile', null) else @set('pile', pile)
-
-  changeColor: =>
-    @set('starred', false)
-    if @get('pile')
-      color = DeloitteGame.Helpers.getColorFromPile(@get('pile'))
-      @set('color', color)
-    else
-      @set('color', 'no-color')
-
-  toggleStarred: =>
-    @set 'starred', !@get("starred")
-
-class DeloitteGame.Collections.GameCards extends Backbone.Collection
-  model: DeloitteGame.Models.GameCard
-  localStorage: new Store "gameCards"
-  comparator: 'id'
-  initialize: ->
-    @on 'change:starred', @checkMaximumStarred
-
-  checkMaximumStarred: (card)->
-    otherCards = @where {starred: true, pile: card.get('pile')}
-    card.set('starred', false) if otherCards.length > 5
-
-class DeloitteGame.Views.GameCardsCollection extends Backbone.View
-  el: '.cards-container'
-  initialize: ->
-    @render()
-
-  render: =>
-    @collection.each @renderCard, @
-
-  renderCard: (card)=>
-    $card = @$(".game-card-container#game-card-#{card.get('id')}")
-    cardView = new DeloitteGame.Views.GameCard({el: $card, model: card})
-
-class DeloitteGame.Views.GameCard extends Backbone.View
-  events:
-    'click .select-color': 'colorClicked'
-    'click .card-flipper': 'flipCard'
-    'click .starred-circle': 'starCard'
-  initialize: ->
-    @model.on 'change:color change:starred', @render
-    @render()
-
-  render: =>
-    @clearClasses()
-    @$el.addClass @model.get('color')
-    @$el.addClass('color-choosed') if @model.get('pile')
-    @$(".select-color.#{@model.get('color')}").addClass 'selected'
-    @$el.addClass 'starred' if @model.get('starred')
-
-  starCard: =>
-    @model.toggleStarred()
-    DeloitteGame.EventDispatcher.trigger 'card:colorclicked', @model
-
-  clearClasses: =>
-    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed starred'
-    @$('.select-color').removeClass 'selected'
-
-  colorClicked: (e)=>
-    @model.updatePile $(e.currentTarget).data('pile')
-    DeloitteGame.EventDispatcher.trigger 'card:colorclicked'
-
-  flipCard: (e)=>
-    @$el.find('.game-card').toggleClass 'flipped'
-    false    
-
-# CLASSES FOR CARDS CONTAINER, RESPONSIBLE FOR MIXING CARDS AND COUNTING THEM
-class DeloitteGame.Models.GameCardsContainer extends Backbone.Model
-  defaults:
-    visibleCards: 'all'
-    currentView: 'game'
-    selectedCardsLength: 0
-    totalCardsOfView: 0
-    totalCards: 0
-    finishedView: false
-
-  initialize: ->
-    @on 'change:totalCardsOfView', @updateSelectedCardsLength
-    @on 'change:currentView', @updatePageCards
-    @on 'change:finishedView', @triggerFinishedView
-    DeloitteGame.EventDispatcher.on 'router:changed', @routerChanged
-    DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
-    DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
-    DeloitteGame.EventDispatcher.on 'card:colorclicked', @checkPageDone
-    @updateTotalCards()
-
-  updatePageCards: =>
-    DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
-    @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
-    @updateTotalCards()
-
-  updateTotalCards: =>
-    if @get('currentView') is 'game'
-      @set 'totalCardsOfView', @get('totalCards')
-    else
-      @set 'totalCardsOfView', Math.min(5, $(".game-card-container#{@get('visibleCards')}").length)
-    @trigger 'change:totalCardsOfView'
-    @checkPageDone()
-
-  updateSelectedCardsLength: =>
-    if @get('currentView') is 'game'
-      @set 'selectedCardsLength', $('.game-card-container.color-choosed').length
-    else
-      length = $(".game-card-container#{@get('visibleCards')}.starred").length
-      @set 'selectedCardsLength', length
-    @checkPageDone()
-
-  updateVisibleCards: (filter)=>
-    @set 'visibleCards', filter
-
-  checkPageDone: (card = null)=>
-    if @get('selectedCardsLength') == @get('totalCardsOfView')
-      @set 'finishedView', true
-    else
-      @set 'finishedView', false
-
-  routerChanged: (view)=>
-    @set 'currentView', view
-
-  triggerFinishedView: =>
-    DeloitteGame.EventDispatcher.trigger 'view:done', @get('finishedView')
-
-class DeloitteGame.Views.GameCardsContainer extends Backbone.View
-  initialize: ->
-    @model.on 'change:visibleCards', @sortCards
-    @model.on 'change:currentView', @changeContainerClass
-    filter = DeloitteGame.Helpers.getColorClassFromView(Backbone.history.fragment)
-    @$el.mixItUp
-        animation:
-          duration: 940
-          effects: 'fade translateZ(-360px) rotateY(-100deg) stagger(20ms)'
-          easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
-        selectors:
-          target: '.game-card-container'
-        load:
-          filter: filter
-
-  sortCards: =>
-    @$el.mixItUp 'filter', @model.get('visibleCards')
-
-  changeContainerClass: =>
-    @$el.removeClass 'game core adjacent aspirational out-of-bounds'
-    @$el.addClass @model.get('currentView')
-
-# RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING
-# TO TOP AND OPENING DESCRIPTIONS WHEN IN SMALL SCREENS
-class DeloitteGame.Models.PilesContainer extends Backbone.Model
-  defaults:
-    pile: null
-    description: ""
-
-  updatePile: (pile)=>
-    if pile is @get('pile') then @set('pile', null) else @set('pile', pile)
-
-class DeloitteGame.Views.PilesContainer extends Backbone.View
-  events:
-    'click .cards-pile': 'cardsPileClicked'
-  initialize: ->
-    DeloitteGame.EventDispatcher.on 'window:stucktoggle', @toggleStuck
-    @$el.append('<div id="floating-pile-description">')
-    @floatingPileDescrition = @$('#floating-pile-description')
-    @model.on 'change', @render
-
-  render: =>
-    @clearClasses()
-    if @model.get('pile')
-      $target = @$(".cards-pile[data-pile~=#{@model.get('pile')}]")
-      $target.addClass 'open-pile'
-      @floatingPileDescrition.addClass("open #{@model.get('pile')}")
-      @floatingPileDescrition.html(@model.get 'description')
-
-  cardsPileClicked: (e)=>
-    @model.updatePile $(e.currentTarget).data('pile')
-    @model.set 'description', $(e.currentTarget).find('.pile-description').html()
-
-  clearClasses: =>
-    @$('.cards-pile').removeClass 'open-pile'
-    @floatingPileDescrition.removeClass 'open core adjacent out-of-bounds aspirational'
-
-  toggleStuck: =>
-    @$el.parent().toggleClass('stuck')
-
-# RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
-class DeloitteGame.Views.FooterCounter extends Backbone.View
-  tagName: 'span'
-  template: Handlebars.compile($('#cards-counter').html())
-  events:
-    'click .cards-left-bt': 'leftCards'
-    'click .cards-all-bt': 'allCards'
-
-  initialize: ->
-    @model.on 'change', @render
-    @render()
-
-  render: =>
-    @$el.html @template(@model.toJSON())
-
-  leftCards: (e)=>
-    DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', '.no-color'
-    false
-
-  allCards: (e)=>
-    DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
-    false
-
-class DeloitteGame.Models.GameNavigation extends Backbone.Model
-  defaults:
-    currentView: 'game'
-    isViewDone: false
-
-  initialize: ->
-    DeloitteGame.EventDispatcher.on 'view:changed', @viewChanged
-    DeloitteGame.EventDispatcher.on 'view:done', @viewDone
-    @on 'change:currentView', @updateAttrs
-    @screens = ['game', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
-    @prevLinks = ['http://google.com', '#game', '#core', '#adjacent', '#aspirational']
-    @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/participant/new']
-    @prevTitles = ['Introduction', 'All Cards', 'Previous Pile', 'Previous Pile', 'Previous Pile']
-    @nextTitles = ['Next Pile', 'Next Pile', 'Next Pile', 'Next Pile', 'Registration']
-    @updateAttrs()
-
-  viewChanged: (page)=>
-    @set 'currentView', page
-
-  viewDone: (done)=>
-    @set 'isViewDone', done
-
-  updateAttrs: =>
-    index = $.inArray(@get('currentView'), @screens)
-    @set {nextLinkTitle: @nextTitles[index], prevLinkTitle: @prevTitles[index], nextLinkUrl: @nextLinks[index], prevLinkUrl: @prevLinks[index]}
-    
-class DeloitteGame.Views.FooterNav extends Backbone.View
-  template: Handlebars.compile($("#footer-nav-next").html())
-
-  initialize: ->
-    @model.on 'change', @render
-    @render()
-
-  render: =>
-    @$el.html @template(@model.toJSON())
-
-class DeloitteGame.Views.PageArrowNav extends Backbone.View
-  tagName: 'aside'
-  template: null
-
-  initialize: ->
-    @model.on 'change', @render
-    @template = Handlebars.compile($("##{@$el.data('direction')}-arrow-template").html())
-    @render()
-
-  render: =>
-    @$el.html @template(@model.toJSON())
-
-class DeloitteGame.Views.WindowControll extends Backbone.View
-  events:
-    'scroll': 'updatedScrollPos'
-
-  initialize: ->
-    @topBarStuck = false
-    @topBarPosition = $('#sticky-wrapper').offset().top
-
-  updatedScrollPos: =>
-    top = @$el.scrollTop()
-    if top >= @topBarPosition and !@topBarStuck
-      @topBarStuck = true
-      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
-    else if top <= @topBarPosition and @topBarStuck
-      @topBarStuck = false
-      DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
-
-
-class DeloitteGame.Router extends Backbone.Router
-  routes:
-    ':view': 'viewHandler'
-
-  viewHandler: (view)=>
-    DeloitteGame.EventDispatcher.trigger 'router:changed', view
