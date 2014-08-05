@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6, p
   @media only screen and (max-width: 1012px)
     width: 100%
 
-#sticky-wrapper.stuck
+.stuck
   height: 210px
   .piles-container
     position: fixed
@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6, p
   &.orange-pile
     background-color: $game-orange
   &.purple-pile
-    background-color: $game-purple
+    background-color: $game-purple  
 
   .pile-title
     font-size: rem-calc(26)
@@ -123,6 +123,15 @@ h1, h2, h3, h4, h5, h6, p
       display: none
     .first-letter
       display: block
+
+.core, .adjacent, .aspirational, .out-of-bounds
+  .cards-pile
+    display: none
+    min-height: 100px
+
+.core .blue-pile, .adjacent .green-pile, .aspirational .purple-pile, .out-of-bounds .orange-pile
+  display: block
+  width: 100% !important
 
 .counter-nav
   background: white
