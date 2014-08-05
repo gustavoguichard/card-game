@@ -12,12 +12,8 @@
 //
 //= require jquery/dist/jquery
 //= require mixitup/build/jquery.mixitup.min
-//= require foundation
-//= require turbolinks
 //= require underscore/underscore
 //= require backbone/backbone
 //= require lib/backbone-localStorage-min
 //= require handlebars/handlebars
 //= require deloitte_game/deloitte_game.js
-
-// $(function(){ $(document).foundation(); });
