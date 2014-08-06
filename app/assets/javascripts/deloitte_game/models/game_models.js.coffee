@@ -105,7 +105,7 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
     @on 'change:currentView', @updateAttrs
     @screens = ['game', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
     @prevLinks = ['http://monitorinstitute.com/communityphilanthropy/toolkit_page/prioritizingroles/', '#game', '#core', '#adjacent', '#aspirational']
-    @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/participant/new']
+    @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/results']
     @prevTitles = ['Introduction', 'All Cards', 'Previous Pile', 'Previous Pile', 'Previous Pile']
     @nextTitles = ['Next Pile', 'Next Pile', 'Next Pile', 'Next Pile', 'Registration']
     @updateAttrs()

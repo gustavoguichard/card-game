@@ -1,4 +1,9 @@
 #= require_self
+#= require_tree ./helpers
+#= require_tree ./models
+#= require_tree ./collections
+#= require_tree ./views
+#= require_tree ./routers
 #= require_tree ./pages
 
 window.DeloitteGame ?= {}
@@ -15,3 +20,5 @@ $ ->
   action =  $('#init-js').data('action')
   if action is 'Game'
     DeloitteGame.Pages.Game.init()
+  else if action is 'Results'
+    DeloitteGame.Pages.Results.init()

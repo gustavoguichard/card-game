@@ -95,13 +95,14 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
 # RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
 class DeloitteGame.Views.FooterCounter extends Backbone.View
   tagName: 'span'
-  template: Handlebars.compile($('#cards-counter').html())
+  template: null
   events:
     'click .cards-left-bt': 'leftCards'
     'click .cards-all-bt': 'allCards'
 
   initialize: ->
     @model.on 'change', @render
+    @template = Handlebars.compile($('#cards-counter').html())
     @render()
 
   render: =>
@@ -116,10 +117,11 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
     false
 
 class DeloitteGame.Views.FooterNav extends Backbone.View
-  template: Handlebars.compile($("#footer-nav-next").html())
+  template: null
 
   initialize: ->
     @model.on 'change', @render
+    @template = Handlebars.compile($("#footer-nav-next").html())
     @render()
 
   render: =>

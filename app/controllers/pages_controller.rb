@@ -1,5 +1,14 @@
 class PagesController < ApplicationController
+  before_filter :load_resources
+
   def game
+  end
+
+  def results
+  end
+
+protected
+  def load_resources
     @cards = [
       {id: 1, title: "Lobbying for policy change", action: "Advocating"},
       {id: 2, title: "Influencing government and business priorities", action: "Advocating"},
