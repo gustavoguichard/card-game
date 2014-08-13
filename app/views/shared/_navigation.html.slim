@@ -1,10 +1,10 @@
 aside.prev-nav.arrow-nav.show-for-medium-up data-direction="prev"
   script#prev-arrow-template type="text/template" 
-    a.arrow-nav-link href="{{prevLinkUrl}}"
+    a.arrow-nav-link.can-navigate href="{{prevLinkUrl}}"
       | Back to <strong>{{prevLinkTitle}}</strong>
       i.entypo-left-bold
 aside.next-nav.arrow-nav.show-for-medium-up data-direction="next"
   script#next-arrow-template type="text/template" 
-    a.arrow-nav-link href="{{nextLinkUrl}}"
+    a.arrow-nav-link href="{{nextLinkUrl}}" class="{{#if isHomeDone}}can-navigate{{/if}}"
       | Go to <strong>{{nextLinkTitle}}</strong>
       i.entypo-right-bold

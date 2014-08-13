@@ -29,7 +29,7 @@
       padding-top: rem-calc(30)
       background-color: white
       border: 3px solid $game-medium-gray
-    &:hover
+    &.can-navigate:hover
       i
         background-color: $game-dark
         border-color: transparent 
@@ -44,7 +44,7 @@
         right: - rem-calc(50)
         border-left: none
         border-radius: 0 rem-calc(130) rem-calc(130) 0
-      &:hover
+      &.can-navigate:hover
         left: 0
 
   &.next-nav
@@ -57,5 +57,5 @@
         left: - rem-calc(50)
         border-right: none
         border-radius: rem-calc(130) 0 0 rem-calc(130)
-      &:hover
+      &.can-navigate:hover
         right: 0

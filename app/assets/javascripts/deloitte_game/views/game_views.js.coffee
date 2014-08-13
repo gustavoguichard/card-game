@@ -138,6 +138,8 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
 class DeloitteGame.Views.PageArrowNav extends Backbone.View
   tagName: 'aside'
   template: null
+  events:
+    'click': 'checkIfCanNavigate'
 
   initialize: ->
     @model.on 'change', @render
@@ -146,6 +148,10 @@ class DeloitteGame.Views.PageArrowNav extends Backbone.View
 
   render: =>
     @$el.html @template(@model.toJSON())
+
+  checkIfCanNavigate: =>
+    unless @$('a').hasClass 'can-navigate'
+      return false
 
 class DeloitteGame.Views.WindowControll extends Backbone.View
   events:

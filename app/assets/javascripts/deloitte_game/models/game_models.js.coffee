@@ -52,10 +52,11 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     @updateTotalCards()
 
   updatePageCards: =>
-    @set 'isHome', @get('currentView') == 'game'
-    DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
-    @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
-    @updateTotalCards()
+    if @requireCardsSelected()
+      @set 'isHome', @get('currentView') == 'game'
+      DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
+      @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
+      @updateTotalCards()
 
   updateTotalCards: =>
     if @get('currentView') is 'game'
@@ -75,6 +76,13 @@ class DeloitteGame.Models.GameState extends Backbone.Model
 
   updateVisibleCards: (filter)=>
     @set 'visibleCards', filter
+
+  requireCardsSelected: =>
+    if @get('currentView') != 'game' and $('.game-card-container.color-choosed').length < @get('totalCards')
+      Backbone.history.navigate 'game', {trigger: true}
+      false
+    else
+      true
 
   checkPageDone: (card = null)=>
     if @get('selectedCardsLength') == @get('totalCardsOfView')
@@ -101,6 +109,7 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
   defaults:
     currentView: 'game'
     isViewDone: false
+    isHomeDone: false
 
   initialize: ->
     DeloitteGame.EventDispatcher.on 'view:changed', @viewChanged
@@ -118,6 +127,11 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
 
   viewDone: (done)=>
     @set 'isViewDone', done
+    if !done and @get('currentView') is 'game'
+      @set 'isHomeDone', false
+    else
+      @set 'isHomeDone', true
+
 
   updateAttrs: =>
     index = $.inArray(@get('currentView'), @screens)
