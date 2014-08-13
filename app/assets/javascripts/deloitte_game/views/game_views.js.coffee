@@ -65,10 +65,13 @@ class DeloitteGame.Views.GameState extends Backbone.View
 # RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING
 # TO TOP AND OPENING DESCRIPTIONS WHEN IN SMALL SCREENS
 class DeloitteGame.Views.PilesContainer extends Backbone.View
+  template: null
   events:
     'click .cards-pile': 'cardsPileClicked'
   initialize: ->
     DeloitteGame.EventDispatcher.on 'window:stucktoggle', @toggleStuck
+    DeloitteGame.EventDispatcher.on 'view:changed', @closeFloatingPile
+    @template = Handlebars.compile($('#pile-description').html())
     @$el.append('<div id="floating-pile-description">')
     @floatingPileDescrition = @$('#floating-pile-description')
     @model.on 'change', @render
@@ -79,11 +82,12 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
       $target = @$(".cards-pile[data-pile~=#{@model.get('pile')}]")
       $target.addClass 'open-pile'
       @floatingPileDescrition.addClass("open #{@model.get('pile')}")
-      @floatingPileDescrition.html(@model.get 'description')
+      @floatingPileDescrition.html(@template(@model.toJSON()))
 
   cardsPileClicked: (e)=>
     @model.updatePile $(e.currentTarget).data('pile')
     @model.set 'description', $(e.currentTarget).find('.pile-description').html()
+    @model.set 'title', $(e.currentTarget).find('.full-title').html()
 
   clearClasses: =>
     @$('.cards-pile').removeClass 'open-pile'
@@ -91,6 +95,10 @@ class DeloitteGame.Views.PilesContainer extends Backbone.View
 
   toggleStuck: =>
     @$el.parent().toggleClass('stuck')
+
+  closeFloatingPile: =>
+    @floatingPileDescrition.removeClass 'open'
+    @$('.cards-pile').removeClass 'open-pile'
 
 # RESPONSIBLE TO CHANGE FOOTER COUNTER WHEN A NEW CARD IS SELECTED
 class DeloitteGame.Views.FooterCounter extends Backbone.View

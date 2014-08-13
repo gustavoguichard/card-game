@@ -92,6 +92,7 @@ class DeloitteGame.Models.PilesContainer extends Backbone.Model
   defaults:
     pile: null
     description: ""
+    title: ""
 
   updatePile: (pile)=>
     if pile is @get('pile') then @set('pile', null) else @set('pile', pile)

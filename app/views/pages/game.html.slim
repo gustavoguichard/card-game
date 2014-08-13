@@ -41,6 +41,12 @@
           span.first-letter O
           span.full-title Out of Bounds
         p.pile-description It’s not what we’re about
+    script#pile-description type="text/template"
+      h4.title
+        | {{title}}
+      p.description
+        | {{description}}
+
 
   .cards-container.row
     - @cards.each_with_index do | card, index |

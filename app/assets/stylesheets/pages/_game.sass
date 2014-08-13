@@ -119,10 +119,14 @@ h1, h2, h3, h4, h5, h6, p
     z-index: -1
     +transition(.3s)    
 
-  @media only screen and (max-width: 831px)
+@media only screen and (max-width: 831px)
+  .game .cards-pile
     .full-title
       display: none
     .first-letter
+      display: block
+  .game #floating-pile-description
+    .title
       display: block
 
 .core, .adjacent, .aspirational, .out-of-bounds
@@ -177,6 +181,14 @@ h1, h2, h3, h4, h5, h6, p
   color: white
   font-size: rem-calc(20)
   z-index: 100
+  .description
+    margin-bottom: 0
+    font-size: 1.1em
+  .title
+    color: white
+    font-weight: bold
+    margin: 0 0 -5px
+    display: none
   .stuck &.open
     display: block
   @media only screen and (max-width: 1012px)
