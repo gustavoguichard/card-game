@@ -7,6 +7,9 @@ class PagesController < ApplicationController
   def results
   end
 
+  def questions
+  end
+
 protected
   def load_resources
     @cards = [

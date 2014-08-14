@@ -1,5 +1,5 @@
 - content_for :navigation
-  = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: '#', prev_title: "Out of Bounds Pile", next_title: false}
+  = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: questions_path, prev_title: "Out of Bounds Pile", next_title: "Reflection Questions"}
 .page-container.results-container
   header.page-title
     h2 Congratulations! 
@@ -7,7 +7,7 @@
       | You have now identified your organization’s strategic portfolio of roles, including the core, adjacent, and aspirational roles that you believe your organization should be playing, as well as those roles you think your organization should explicitly not play. 
       br/
       | You can review the roles you selected (along with a sense of the broader categories of roles they fit within) below:
-
+  
   .game-results.row
     .large-6.columns.pile-group.core
       h2.result-pile-title Core
@@ -17,6 +17,14 @@
       h2.result-pile-title Aspirational
     .large-6.columns.pile-group.out-of-bounds
       h2.result-pile-title Out of Bounds
+
+footer.page-footer-info
+  p
+    | For a set of helpful reflection questions prompted by these results, please 
+    = link_to "click here", questions_path
+    |.
+    br/
+    | If you haven’t already provided your email address and want to have these results send to you, please click here.
   
 script#card-action-group type="text/template"
   ul.result-action-list class="{{groupClass}}"
