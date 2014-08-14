@@ -1,0 +1,38 @@
+.game-results
+  text-align: left
+  .pile-group
+    padding-bottom: 4em
+  .result-action-list, .result-pile-title
+    max-width: 370px
+    margin-left: auto
+    margin-right: auto
+  .result-action-list
+    list-style: none
+    margin-bottom: 3em
+    @media (max-width: 1024px)
+      left: 30px
+      max-width: 310px
+    +decorative-content
+      +image-replace("results/ico_advocating.png")
+      left: -60px
+      top: 0
+  .card-item
+    padding-left: 1em
+    +decorative-content
+      width: 8px
+      height: 8px
+      border-radius: 100%
+      background: black
+      left: 0
+      top: 8px
+  .result-pile-title
+    font-weight: bold
+    text-transform: uppercase
+    margin-bottom: 1em
+  .action-title
+    font-weight: bold
+  .card-item
+    margin-bottom: .5em
+  .advocating
+    .action-title
+      color: $result-adv
