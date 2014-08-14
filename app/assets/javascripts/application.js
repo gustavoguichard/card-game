@@ -15,5 +15,6 @@
 //= require underscore/underscore
 //= require backbone/backbone
 //= require lib/backbone-localStorage-min
+//= require lib/parameterize
 //= require handlebars/handlebars
 //= require deloitte_game/deloitte_game.js
