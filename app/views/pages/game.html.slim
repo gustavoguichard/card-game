@@ -1,71 +1,12 @@
+- content_for :navigation
+  = render partial: 'shared/dynamic_navigation'
 .page-container.game-container
-  header.page-title.game
-    h2 Choose one color for every card according to the four colorful piles.
-    h4 
-      | Quickly go through each of the cards below, one by one.
-      br/
-      | For each card, think about the role described on it and ask yourself how “core” it is to your organization.
-      br/
-      | It should be an instinctive response; don’t take more than 10 seconds per card. 
-  header.page-title.core
-    h2 Pick the five most critical roles.
-    h4
-      | Look through the cards you placed in your <span class="blue-color">core</span> pile.
-      br/
-      | This pile represents what you think is your organization’s core — the bread and butter of your work.
-  header.page-title.adjacent
-    h2 Pick the five next most critical roles.
-    h4
-      | Look through the cards in your <span class="green-color">adjacent</span> pile (which also includes core roles you didn’t select in the last step).
-      br/
-      | Pick the ones you think are important, but not necessarily at the very center of your organization.
-  header.page-title.aspirational
-    h2 Pick the five that will be most important for you to do more of in the future.
-    h4
-      | Look through the cards in your <span class="purple-color">aspirational</span> pile.
-      br/
-      | Pick the ones you think will be most interesting or impactful for you to experiment with in the coming years.
-  header.page-title.out-of-bounds
-    h2 Choose (up to) five that you feel most certain you should NOT take on.
-    h4
-      | Look at the cards in your <span class="orange-color">out of bounds</span> pile.
-      br/
-      | There are many roles you can play, but you don’t have to play all of them.
-      br/
-      | Being strategic means understanding what you say no to, not just what you say yes to.
-  
-  #sticky-wrapper
-    .piles-container.row
-      .cards-pile.blue-pile data-pile="core"
-        h2.pile-title
-          span.first-letter C
-          span.full-title Core
-        p.pile-description This is what we’re all about
-      .cards-pile.green-pile data-pile="adjacent"
-        h2.pile-title
-          span.first-letter A
-          span.full-title Adjacent
-        p.pile-description It’s important, but not central
-      .cards-pile.purple-pile data-pile="aspirational"
-        h2.pile-title
-          span.first-letter A
-          span.full-title Aspirational
-        p.pile-description It’ll be important for us to do, or do more of, in the future
-      .cards-pile.orange-pile data-pile="out-of-bounds"
-        h2.pile-title
-          span.first-letter O
-          span.full-title Out of Bounds
-        p.pile-description It’s not what we’re about
-    script#pile-description type="text/template"
-      h4.title
-        | {{title}}
-      p.description
-        | {{description}}
-
+  = render 'pages/game/header'
+  = render 'pages/game/piles'
 
   .cards-container.row
     - @cards.each_with_index do | card, index |
-      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}"
+      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}" data-card-action="#{card[:action]}"
         .game-card
           .card-face.card-front
             header.color-selector
@@ -89,14 +30,4 @@
                 span Flip card
                 i.entypo-arrows-ccw
 
-  footer.counter-nav
-    span.footer-count
-      script#cards-counter type="text/template" 
-        | You have chosen {{selectedCardsLength}} out of {{totalCardsOfView}} possible cards.
-        |{{#if isHome}}
-        |  <a class="button cards-left-bt">Cards left</a>. <a class="button cards-all-bt">All Cards</a>
-        |{{/if}}
-  footer.footer-nav-next
-    script#footer-nav-next type="text/template"
-      .navigator class="{{currentView}} {{#if isViewDone}}done{{/if}}"
-        a.footer-nav-bt href="{{nextLinkUrl}}" Go to the {{nextLinkTitle}}
+  = render 'pages/game/footer'

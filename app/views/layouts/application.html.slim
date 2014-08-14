@@ -10,7 +10,6 @@ html.no-js lang="en"
   body
     = initjs_tag "DeloitteGame"
     = render partial: 'shared/header'
-    = render partial: 'shared/navigation'
-
+    = yield :navigation
     = yield
     = javascript_include_tag "application"

@@ -1,0 +1,11 @@
+footer.counter-nav
+  span.footer-count
+    script#cards-counter type="text/template" 
+      | You have chosen {{selectedCardsLength}} out of {{totalCardsOfView}} possible cards.
+      |{{#if isHome}}
+      |  <a class="button cards-left-bt">Cards left</a>. <a class="button cards-all-bt">All Cards</a>
+      |{{/if}}
+footer.footer-nav-next
+  script#footer-nav-next type="text/template"
+    .navigator class="{{currentView}} {{#if isViewDone}}done{{/if}}"
+      a.footer-nav-bt href="{{nextLinkUrl}}" Go to the {{nextLinkTitle}}

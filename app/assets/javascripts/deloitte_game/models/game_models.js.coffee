@@ -1,35 +1,6 @@
 ################################################################################
 # MODELS
 ################################################################################
-class DeloitteGame.Models.GameCard extends Backbone.Model
-  defaults:
-    id: null
-    pile: null
-    color: "no-color"
-    starred: false
-
-  initialize: ->
-    @on 'change:pile', @changeColor
-    @on 'change', @saveModel
-
-  saveModel: ->
-    @save()
-    DeloitteGame.EventDispatcher.trigger 'card:changed'
-
-  updatePile: (pile)=>
-    if pile is @get('pile') then @set('pile', null) else @set('pile', pile)
-
-  changeColor: =>
-    @set('starred', false)
-    if @get('pile')
-      color = DeloitteGame.Helpers.getColorFromPile(@get('pile'))
-      @set('color', color)
-    else
-      @set('color', 'no-color')
-
-  toggleStarred: =>
-    @set 'starred', !@get("starred")
-
 # RESPONSIBLE FOR SHOWING CARDS AND COUNTING THEM
 class DeloitteGame.Models.GameState extends Backbone.Model
   defaults:
@@ -118,8 +89,8 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
     @screens = ['game', 'core', 'adjacent', 'aspirational', 'out-of-bounds']
     @prevLinks = ['http://monitorinstitute.com/communityphilanthropy/toolkit_page/prioritizingroles/', '#game', '#core', '#adjacent', '#aspirational']
     @nextLinks = ['#core', '#adjacent', '#aspirational', '#out-of-bounds', '/results']
-    @prevTitles = ['Introduction', 'All Cards', 'Previous Pile', 'Previous Pile', 'Previous Pile']
-    @nextTitles = ['Next Pile', 'Next Pile', 'Next Pile', 'Next Pile', 'Registration']
+    @prevTitles = ['Introduction', 'Cards selection', 'Core Pile', 'Adjacent Pile', 'Aspirational Pile']
+    @nextTitles = ['Core Pile', 'Adjacent Pile', 'Aspirational Pile', 'Out of Bounds Pile', 'Results Page']
     @updateAttrs()
 
   viewChanged: (page)=>

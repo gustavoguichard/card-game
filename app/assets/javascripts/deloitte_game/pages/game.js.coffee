@@ -14,7 +14,7 @@ DeloitteGame.Pages.Game =
     cardsList.fetch()
     unless cardsList.length is $cards.length
       for card in $cards
-        model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id')})
+        model = new DeloitteGame.Models.GameCard({id: $(card).data('card-id'), action: $(card).data('card-action')})
         cardsList.create model
     # Instantiates the view to the collection of cards
     new DeloitteGame.Views.GameCardsCollection({collection: cardsList})

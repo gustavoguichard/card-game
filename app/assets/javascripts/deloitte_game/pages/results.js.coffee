@@ -3,4 +3,6 @@
 ################################################################################
 DeloitteGame.Pages.Results = 
   init: ->
-    console.log "Results page"
+    window.cardsList = new DeloitteGame.Collections.GameCards
+    # Get's saved cards from localStorage
+    cardsList.fetch()

@@ -1,7 +1,13 @@
+- content_for :navigation
+  = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: '#', prev_title: "Out of Bounds Pile", next_title: false}
 .page-container.results-container
-  h2.page-title
-    strong Congratulations! 
-    | You have now identified your organization’s strategic portfolio of roles, including the core, adjacent, and aspirational roles that you believe your organization should be playing, as well as those roles you think your organization should explicitly not play. You can review the roles you selected (along with a sense of the broader categories of roles they fit within) below:
+  header.page-title
+    h2 Congratulations! 
+    h4
+      | You have now identified your organization’s strategic portfolio of roles, including the core, adjacent, and aspirational roles that you believe your organization should be playing, as well as those roles you think your organization should explicitly not play. 
+      br/
+      | You can review the roles you selected (along with a sense of the broader categories of roles they fit within) below:
 
   .game-results.row
+    
     
