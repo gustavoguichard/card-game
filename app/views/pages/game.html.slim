@@ -6,7 +6,7 @@
 
   .cards-container.row
     - @cards.each_with_index do | card, index |
-      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}" data-card-action="#{card[:action]}"
+      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}" data-card-action="#{card[:action]}" data-card-title="#{card[:title]}"
         .game-card
           .card-face.card-front
             header.color-selector

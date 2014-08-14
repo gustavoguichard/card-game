@@ -8,6 +8,7 @@ class DeloitteGame.Models.GameCard extends Backbone.Model
     color: "no-color"
     starred: false
     action: ''
+    title: ''
 
   initialize: ->
     @on 'change:pile', @changeColor
