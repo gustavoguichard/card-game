@@ -24,7 +24,7 @@
                 span Flip to read more
                 i.entypo-arrows-ccw
           .card-face.card-back
-            = image_tag "card-back.png"
+            p.card-description= card[:copy]
             footer.card-footer
               a.card-flipper href="#"
                 span Flip card
