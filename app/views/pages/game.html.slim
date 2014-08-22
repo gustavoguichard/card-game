@@ -5,29 +5,6 @@
   = render 'pages/game/piles'
 
   .cards-container.row
-    - @cards.each_with_index do | card, index |
-      .game-card-container.no-color data-custom-order="#{index}" id="game-card-#{card[:id]}" data-card-id="#{card[:id]}" data-card-action="#{card[:action]}" data-card-title="#{card[:title]}"
-        .game-card
-          .card-face.card-front
-            header.color-selector
-              span.select-color.blue-color data-pile="core"
-              span.select-color.green-color data-pile="adjacent"
-              span.select-color.purple-color data-pile="aspirational"
-              span.select-color.orange-color data-pile="out-of-bounds"
-            aside.starred-circle
-              i.entypo-check
-            article.card-content
-              h5.card-action= card[:action]
-              p.card-title= card[:title]
-            footer.card-footer
-              a.card-flipper href="#"
-                span Flip to read more
-                i.entypo-arrows-ccw
-          .card-face.card-back
-            p.card-description= card[:copy]
-            footer.card-footer
-              a.card-flipper href="#"
-                span Flip card
-                i.entypo-arrows-ccw
-
+    - @cards.each do |card|
+      = render partial: 'pages/game/card', locals: {card: card}
   = render 'pages/game/footer'
