@@ -13,4 +13,6 @@ DeloitteGame.Helpers.getColorClassFromView = (view)->
   if view is 'game' or view is ''
     return 'all'
   else
-    return ".#{DeloitteGame.Helpers.getColorFromPile(view)}"
+    color = DeloitteGame.Helpers.getColorFromPile(view)
+    if color is 'green-color' then color = 'cor-adj-color'
+    return ".#{color}"

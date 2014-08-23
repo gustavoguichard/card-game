@@ -26,15 +26,18 @@ class DeloitteGame.Views.GameCard extends Backbone.View
     @clearClasses()
     @$el.addClass @model.get('color')
     @$el.addClass('color-choosed') if @model.get('pile')
+    @$el.addClass('cor-adj-color') if @model.get('pile') is 'adjacent' or (@model.get('pile') is 'core' and !@model.get('starred'))
     @$(".select-color.#{@model.get('color')}").addClass 'selected'
     @$el.addClass 'starred' if @model.get('starred')
 
   starCard: =>
+    if @$el.hasClass('cor-adj-color') and !@$el.hasClass('green-color') and @$el.closest('.cards-container.adjacent').length > 0
+      @$el.find('.select-color.green-color').click()
     @model.toggleStarred()
     DeloitteGame.EventDispatcher.trigger 'card:colorclicked', @model
 
   clearClasses: =>
-    @$el.removeClass 'blue-color purple-color orange-color green-color no-color color-choosed starred'
+    @$el.removeClass 'cor-adj-color blue-color purple-color orange-color green-color no-color color-choosed starred'
     @$('.select-color').removeClass 'selected'
 
   colorClicked: (e)=>
@@ -60,6 +63,8 @@ class DeloitteGame.Views.GameState extends Backbone.View
           filter: filter
 
   sortCards: =>
+    @$el.removeClass 'game core adjacent aspirational out-of-bounds'
+    @$el.addClass @model.get 'currentView'
     @$el.mixItUp 'filter', @model.get('visibleCards')
 
 # RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING

@@ -32,6 +32,8 @@ class DeloitteGame.Models.GameState extends Backbone.Model
   updateTotalCards: =>
     if @get('currentView') is 'game'
       @set 'totalCardsOfView', @get('totalCards')
+    else if @get('currentView') is 'out-of-bounds'
+      @set 'totalCardsOfView', $(".game-card-container#{@get('visibleCards')}").length
     else
       @set 'totalCardsOfView', Math.min(5, $(".game-card-container#{@get('visibleCards')}").length)
     @trigger 'change:totalCardsOfView'

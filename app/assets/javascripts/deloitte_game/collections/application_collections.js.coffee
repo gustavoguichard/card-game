@@ -10,4 +10,4 @@ class DeloitteGame.Collections.GameCards extends Backbone.Collection
 
   checkMaximumStarred: (card)->
     otherCards = @where {starred: true, pile: card.get('pile')}
-    card.set('starred', false) if otherCards.length > 5
+    card.set('starred', false) if otherCards.length > 5 && card.get('pile') isnt 'out-of-bounds'
