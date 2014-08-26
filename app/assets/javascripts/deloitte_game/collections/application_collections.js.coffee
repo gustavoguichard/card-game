@@ -3,7 +3,7 @@
 ################################################################################
 class DeloitteGame.Collections.GameCards extends Backbone.Collection
   model: DeloitteGame.Models.GameCard
-  localStorage: new Store "gameCards"
+  localStorage: new Store "gameCard"
   comparator: 'id'
   initialize: ->
     @on 'change:starred', @checkMaximumStarred

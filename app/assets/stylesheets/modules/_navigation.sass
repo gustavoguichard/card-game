@@ -39,23 +39,27 @@
     left: 0
     padding-right: 50px
     .arrow-nav-link
-      left: -100%
+      left: -200%
       i
         right: - rem-calc(50)
         border-left: none
         border-radius: 0 rem-calc(130) rem-calc(130) 0
-      &.can-navigate:hover
-        left: 0
+      &.can-navigate
+        left: -100%
+        &:hover
+          left: 0
 
   &.next-nav
     right: 0
     padding-left: 50px
     text-align: right
     .arrow-nav-link
-      right: -100%
+      right: -200%
       i
         left: - rem-calc(50)
         border-right: none
         border-radius: rem-calc(130) 0 0 rem-calc(130)
-      &.can-navigate:hover
-        right: 0
+      &.can-navigate
+        right: -100%
+        &:hover
+          right: 0
