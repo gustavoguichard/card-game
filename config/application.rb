@@ -32,5 +32,7 @@ module DeloitteGame
         '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
       ]
     end)
+
+    config.active_record.schema_format = :sql
   end
 end
