@@ -65,6 +65,7 @@ GEM
       railties (>= 3.1.0)
       sass (>= 3.2.0)
     fssm (0.2.10)
+    geocoder (1.2.4)
     google-analytics-rails (0.0.6)
     heroku-deflater (0.4.2)
       rack (>= 1.4.5)
@@ -166,6 +167,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   compass-rails (>= 1.1.7)
   foundation-rails
+  geocoder
   google-analytics-rails
   heroku-deflater (~> 0.4.1)
   initjs

@@ -1,10 +1,15 @@
 class PagesController < ApplicationController
-  before_filter :load_resources
+  before_filter :load_resources, only: [:game, :results]
 
   def game
   end
 
   def results
+  end
+
+  def registration
+    @user_ip = remote_ip()
+    raise @user_ip
   end
 
   def questions

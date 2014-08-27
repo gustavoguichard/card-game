@@ -24,6 +24,8 @@ gem 'google-analytics-rails'
 # Server
 gem 'unicorn'
 
+gem 'geocoder'
+
 group :production do
   gem 'heroku-deflater', '~> 0.4.1'
   gem 'rails_12factor'
