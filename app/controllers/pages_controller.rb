@@ -9,7 +9,7 @@ class PagesController < ApplicationController
 
   def registration
     @user_ip = remote_ip()
-    raise @user_ip
+    # raise @user_ip
   end
 
   def questions
