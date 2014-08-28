@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  helper_method :current_evaluation
+  helper_method :current_evaluation, :user_didnt_register?
 
 private
   def current_evaluation
@@ -13,6 +13,10 @@ private
     evaluation = Evaluation.create(city: city, state: state)
     session[:evaluation_id] = evaluation.id
     evaluation
+  end
+
+  def user_didnt_register?
+    current_evaluation.name.blank? or current_evaluation.email.blank?
   end
 
   def load_resources

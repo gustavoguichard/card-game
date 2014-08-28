@@ -1,5 +1,5 @@
 - content_for :navigation
-  - if current_evaluation.name.blank? or current_evaluation.email.blank?
+  - if user_didnt_register?
     = render partial: 'shared/navigation', locals: {prev_link: registration_path, next_link: questions_path, prev_title: "Registration Page", next_title: "Reflection Questions"}
   - else
     = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: questions_path, prev_title: "Out of Bounds Pile", next_title: "Reflection Questions"}
@@ -27,5 +27,8 @@ footer.page-footer-info
     | For a set of helpful reflection questions prompted by these results, please 
     = link_to "click here", questions_path
     |.
-    br/
-    | If you haven’t already provided your email address and want to have these results send to you, please click here.
+    - if user_didnt_register?
+      br/
+      | If you haven’t already provided your email address and want to have these results sent to you, please 
+      = link_to "click here", registration_path
+      |.

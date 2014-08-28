@@ -17,10 +17,11 @@
       li Are you concentrating most of your resources on your most core activities, or are you spreading them widely across a range of activities?
       li Are you dedicating enough resources for experimenting with new roles and activities?
       li Eric Schmidt of Google used to follow a 70%-20%-10% distribution across core, adjacent, and aspirational goals. What resource allocation strategy makes the most sense for your organization? 
-    p
-      | If you have already provided your email address, you will receive a copy of these questions (and more) with your results message. If you have not yet entered your email and would like to receive a copy of the reflection questions, as well as your Prioritizing Roles results, please 
-      = link_to "click here", "#"
-      | .
+    - if user_didnt_register?
+      p
+        | If you have already provided your email address, you will receive a copy of these questions (and more) with your results message. If you have not yet entered your email and would like to receive a copy of the reflection questions, as well as your Prioritizing Roles results, please 
+        = link_to "click here", registration_path
+        | .
     p 
       | For more information and instructions on the Prioritizing Roles exercise, or to learn about how to run the Prioritizing Roles game off-line with real card decks, please 
       = link_to "visit this link", "http://monitorinstitute.com/communityphilanthropy/toolkit_page/prioritizingroles", target: :blank
