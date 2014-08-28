@@ -60,7 +60,7 @@ $body-font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
 // $default-float: left;
 
 // We use these as default colors throughout
-$primary-color: $game-medium-gray;
+$primary-color: $game-blue;
 // $secondary-color: #e7e7e7;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
@@ -1093,26 +1093,26 @@ $block-grid-default-spacing: 15px;
 // $table-even-row-bg: #f9f9f9  ;
 
 // These control the table cell border style
-// $table-border-style: solid;
-// $table-border-size: 1px;
+$table-border-style: none;
+$table-border-size: 0;
 // $table-border-color: #ddd;
 
 // These control the table head styles
-// $table-head-bg: #f5f5f5  ;
-// $table-head-font-size: rem-calc(14);
-// $table-head-font-color: #222;
-// $table-head-font-weight: $font-weight-bold;
-// $table-head-padding: rem-calc(8 10 10);
+$table-head-bg: $primary-color;
+$table-head-font-size: rem-calc(16);
+$table-head-font-color: white;
+$table-head-font-weight: bolder;
+$table-head-padding: rem-calc(14 14 18);
 
 // These control the row padding and font styles
-// $table-row-padding: rem-calc(9 10);
+$table-row-padding: rem-calc(14);
 // $table-row-font-size: rem-calc(14);
 // $table-row-font-color: #222;
 // $table-line-height: rem-calc(18);
 
 // These are for controlling the display and margin of tables
 // $table-display: table-cell;
-// $table-margin-bottom: rem-calc(20);
+$table-margin-bottom: rem-calc(50);
 
 //
 // TABS
@@ -1304,4 +1304,6 @@ $block-grid-default-spacing: 15px;
   "foundation/components/inline-lists",
   "foundation/components/forms",
   "foundation/components/type",
+  "foundation/components/pagination",
+  "foundation/components/tables",
   "foundation/components/visibility";

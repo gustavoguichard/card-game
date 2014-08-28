@@ -3,6 +3,10 @@
   padding: 14px 10px 5px
   border-bottom: 1px solid darken($game-gray, 3%)
   font-family: $alternative-font
+  a
+    color: $game-medium-gray
+    &:hover
+      color: scale-color($game-medium-gray, $lightness: -14%)
 
   .logo-image
     +image-replace("logo.png")
