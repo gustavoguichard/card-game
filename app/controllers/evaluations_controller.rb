@@ -46,7 +46,7 @@ class EvaluationsController < ApplicationController
 private
   
   def evaluation_params
-    params[:evaluation].permit(:name, :city, :email, :state, :data)
+    params[:evaluation].permit(:name, :city, :email, :state, :data, :keyword)
   end
 
 end

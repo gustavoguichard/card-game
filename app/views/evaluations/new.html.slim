@@ -2,10 +2,16 @@
   = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: results_path, prev_title: "Out of Bounds Pile", next_title: "Results Page"}
 .page-container.registration-container
   header.page-title
-    h2 You're almost done. We just need the following information from you.
-    = simple_form_for @evaluation do |f|
-      = f.input :name
-      = f.input :email
-      = f.input :city, as: :hidden
-      = f.input :state, as: :hidden
-      = f.submit 'Send'
+    h2
+      | You're almost done. 
+      br/
+      | We just need the following information from you.
+  .row
+    = simple_form_for @evaluation, html: {class: "registration-form"} do |f|
+      fieldset
+        = f.input :name
+        = f.input :email
+        = f.input :keyword, label: "Group Code (if given)"
+        = f.input :city, as: :hidden
+        = f.input :state, as: :hidden
+        = f.submit 'Send', class: "button"

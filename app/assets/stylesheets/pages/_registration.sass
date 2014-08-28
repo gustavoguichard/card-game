@@ -1,0 +1,21 @@
+.registration-form
+  fieldset
+    max-width: 760px
+    margin: 0 auto
+    padding: 45px 75px
+    position: relative
+    background: white
+    +decorative-content(after, false)
+      width: 99%
+      left: .5%
+      bottom: -3px
+    +decorative-content(before, false)
+      width: 98%
+      left: 1%
+      bottom: -5px
+    &:after, &:before
+      position: absolute
+      height: 20px
+      border: 1px solid $game-dark
+      background: white
+      z-index: -1
