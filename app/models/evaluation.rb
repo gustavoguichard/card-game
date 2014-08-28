@@ -15,4 +15,36 @@ class Evaluation < ActiveRecord::Base
     results
   end
 
+  def name
+    if read_attribute(:name).blank?
+      'Anonymous'
+    else
+      read_attribute(:name)
+    end
+  end
+
+  def email
+    if read_attribute(:email).blank?
+      'Unknown'
+    else
+      read_attribute(:email)
+    end
+  end
+
+  def city
+    if read_attribute(:city).blank?
+      'Unknown'
+    else
+      read_attribute(:city)
+    end
+  end
+
+  def state
+    if read_attribute(:state).blank?
+      'Unknown'
+    else
+      read_attribute(:state)
+    end
+  end
+
 end
