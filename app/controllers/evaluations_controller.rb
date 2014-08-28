@@ -1,12 +1,21 @@
 class EvaluationsController < ApplicationController
   respond_to :html, :json
+  before_filter :load_resources, only: [:show]
 
   def index
     @evaluations = Evaluation.all
   end
 
   def show
-    @evaluation = current_evaluation
+    if params[:id]
+      @evaluation = Evaluation.find params[:id]
+    else
+      @evaluation = current_evaluation
+    end
+    @results = {}
+    %w(core adjacent aspirational out-of-bounds).each do |pile|
+      @results[pile] = @evaluation.results_for(pile, @cards)
+    end
   end
 
   def new

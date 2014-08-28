@@ -1,5 +1,8 @@
 - content_for :navigation
-  = render partial: 'shared/navigation', locals: {prev_link: registration_path, next_link: questions_path, prev_title: "Registration Page", next_title: "Reflection Questions"}
+  - if current_evaluation.name.blank? or current_evaluation.email.blank?
+    = render partial: 'shared/navigation', locals: {prev_link: registration_path, next_link: questions_path, prev_title: "Registration Page", next_title: "Reflection Questions"}
+  - else
+    = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: questions_path, prev_title: "Out of Bounds Pile", next_title: "Reflection Questions"}
 .page-container.results-container
   header.page-title
     h2 Congratulations! 
@@ -9,16 +12,15 @@
       | You can review the roles you selected (along with a sense of the broader categories of roles they fit within) below:
   
   .game-results.row
-    - %w(core adjacent aspirational out-of-bounds).each do |pile|
+    - @results.each do |result|
+      - pile = result[0]
       .large-6.columns.pile-group class="#{pile}"
         h2.result-pile-title= pile.capitalize.gsub('-', ' ')
-        ul.result-action-list class=""
-    / .large-6.columns.pile-group.adjacent
-    /   h2.result-pile-title Adjacent
-    / .large-6.columns.pile-group.aspirational
-    /   h2.result-pile-title Aspirational
-    / .large-6.columns.pile-group.out-of-bounds
-    /   h2.result-pile-title Out of Bounds
+        - for key, cards in result[1]
+          ul.result-action-list class="#{key.parameterize}"
+            h5.action-title= key
+            - cards.each do |card|
+              li.card-item= card[:title]
 
 footer.page-footer-info
   p
@@ -27,12 +29,3 @@ footer.page-footer-info
     |.
     br/
     | If you haven’t already provided your email address and want to have these results send to you, please click here.
-  
-script#card-action-group type="text/template"
-  ul.result-action-list class="{{groupClass}}"
-    h5.action-title
-      | {{groupTitle}}
-    | {{#each cards}}
-    li.card-item
-      | {{title}}
-    | {{/each}}
