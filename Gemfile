@@ -26,11 +26,14 @@ gem 'unicorn'
 
 gem 'geocoder'
 gem 'simple_form'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 gem 'will_paginate-foundation'
 
 group :production do
   gem 'heroku-deflater', '~> 0.4.1'
   gem 'rails_12factor'
+  gem 'wkhtmltopdf-heroku'
 end
 
 group :development do

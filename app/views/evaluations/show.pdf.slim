@@ -1,0 +1,24 @@
+doctype html
+html lang="en" 
+  head
+    title Monitor Institute Game
+    = stylesheet_link_tag "http://monitorinstitute-game.herokuapp.com/assets/application.css", media: "all"
+  body
+    .page-container.results-container
+      header.page-title
+        h2 Congratulations!
+        h4
+          | You have now identified your organizations strategic portfolio of roles, including the core, adjacent, and aspirational roles that you believe your organization should be playing, as well as those roles you think your organization should explicitly not play. 
+          br/
+          | You can review the roles you selected (along with a sense of the broader categories of roles they fit within) below:
+      
+      .game-results.row
+        - @results.each do |result|
+          - pile = result[0]
+          .large-6.columns.pile-group class="#{pile}"
+            h2.result-pile-title= pile.capitalize.gsub('-', ' ')
+            - for key, cards in result[1]
+              ul.result-action-list class="#{key.parameterize}"
+                h5.action-title= key
+                - cards.each do |card|
+                  li.card-item= card[:title]

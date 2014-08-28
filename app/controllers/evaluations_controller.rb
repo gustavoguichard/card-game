@@ -17,6 +17,12 @@ class EvaluationsController < ApplicationController
     %w(core adjacent aspirational out-of-bounds).each do |pile|
       @results[pile] = @evaluation.results_for(pile, @cards)
     end
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "results"
+      end
+    end
   end
 
   def new
