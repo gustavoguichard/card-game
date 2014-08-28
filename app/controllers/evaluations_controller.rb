@@ -5,6 +5,10 @@ class EvaluationsController < ApplicationController
 
   def index
     @evaluations = Evaluation.paginate(page: params[:page], per_page: 30)
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
 
   def show
@@ -19,9 +23,7 @@ class EvaluationsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.pdf do
-        render :pdf => "results"
-      end
+      format.pdf {render :pdf => "results"}
     end
   end
 

@@ -2,16 +2,15 @@
   = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: results_path, prev_title: "Out of Bounds Pile", next_title: "Results Page"}
 .page-container.registration-container
   header.page-title
-    h2
-      | You're almost done. 
-      br/
-      | We just need the following information from you.
+    h2 In order to see the results, please provide us with your basic information. Addresses will not be shared.
   .row
     = simple_form_for @evaluation, html: {class: "registration-form"} do |f|
       fieldset
-        = f.input :name
-        = f.input :email
-        = f.input :keyword, label: "Group Code (if given)"
+        = f.input :name, label: "Full Name"
+        = f.input :email, label: "Email Address"
+        h5 If you are doing this as part of a lab or event, please put in your group name:
+        = f.input :keyword, label: "Group Name"
         = f.input :city, as: :hidden
         = f.input :state, as: :hidden
-        = f.submit 'Send', class: "button"
+        = f.submit 'Submit', class: "button"
+        = link_to 'Skip this step and see the results anonymously.', results_path
