@@ -1,5 +1,10 @@
 class Evaluation < ActiveRecord::Base
-  validates :email, uniqueness: true, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "Email must be valid"}, allow_blank: true
+  validates :email, presence: {message: "Email is not valid."},
+                  format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "Email must be valid"},
+                  allow_blank: true,
+                  uniqueness: { :case_sensitive => false },
+                  allow_nil: true,
+                  :if => :email?
 
   def results_for(pile, cards)
     results = {}

@@ -22,9 +22,8 @@ $ ->
   if resource is 'Pages'
     if action is 'Game'
       DeloitteGame.Pages.Game.init()
-    else if action is 'Results'
-      DeloitteGame.Pages.Results.init()
   else if resource is 'Evaluations'
     if action is 'New'
       DeloitteGame.Pages.Registration.init()
-
+    else if action is 'Show'
+      DeloitteGame.Pages.Results.init()

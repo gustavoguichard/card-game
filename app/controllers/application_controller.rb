@@ -16,7 +16,7 @@ private
   end
 
   def user_didnt_register?
-    current_evaluation.name.blank? or current_evaluation.email.blank?
+    current_evaluation.read_attribute(:name).blank? or current_evaluation.read_attribute(:email).blank?
   end
 
   def load_resources

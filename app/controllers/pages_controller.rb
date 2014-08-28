@@ -7,4 +7,9 @@ class PagesController < ApplicationController
   def questions
   end
 
+  def new_game
+    reset_session
+    redirect_to root_path
+  end
+
 end
