@@ -1,0 +1,22 @@
+.page-container.admin-container
+  header.page-title
+    h2 Admin
+  .admin-list.row
+    table
+      tr
+        td User Name
+        td Email Address
+        td Results
+        td Date and Time
+        td City
+        td State
+        td Group Code
+      - @evaluations.each do |evaluation|
+        tr
+          td= evaluation.name
+          td= evaluation.email
+          td= link_to "View Result", evaluation
+          td= evaluation.created_at.strftime("%a %b %d, %Y, %l:%M:%S %p")
+          td= evaluation.city
+          td= evaluation.state
+          td= evaluation.keyword
