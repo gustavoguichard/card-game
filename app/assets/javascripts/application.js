@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ujs/src/rails
 //= require mixitup/build/jquery.mixitup.min
 //= require underscore/underscore
 //= require backbone/backbone

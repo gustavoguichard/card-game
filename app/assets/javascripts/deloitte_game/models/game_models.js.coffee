@@ -13,6 +13,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     isHome: true
 
   initialize: ->
+    @set('gameID', $('body').data('game-id'))
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
     @on 'change:currentView', @updatePageCards
     @on 'change:finishedView', @triggerFinishedView
@@ -20,7 +21,13 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
     DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
     DeloitteGame.EventDispatcher.on 'card:colorclicked', @checkPageDone
+    DeloitteGame.EventDispatcher.on 'collection:changed', @saveGame
+    @form = $('form.edit_evaluation')
     @updateTotalCards()
+
+  saveGame: (newJSON)=>
+    @form.find('#evaluation_data').val(newJSON)
+    @form.submit()
 
   updatePageCards: =>
     if @requireCardsSelected()
