@@ -1,6 +1,7 @@
 class EvaluationsController < ApplicationController
   respond_to :html, :json
   before_filter :load_resources, only: [:show]
+  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD'], only: [:index]
 
   def index
     @evaluations = Evaluation.paginate(page: params[:page], per_page: 30)
