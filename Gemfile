@@ -26,6 +26,7 @@ gem 'unicorn'
 
 gem 'geocoder'
 gem 'simple_form'
+gem 'will_paginate-foundation'
 
 group :production do
   gem 'heroku-deflater', '~> 0.4.1'

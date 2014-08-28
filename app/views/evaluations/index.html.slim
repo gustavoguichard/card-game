@@ -20,3 +20,5 @@
           td= evaluation.city
           td= evaluation.state
           td= evaluation.keyword
+
+    = will_paginate @evaluations, renderer: FoundationPagination::Rails

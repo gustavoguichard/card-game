@@ -3,7 +3,7 @@ class EvaluationsController < ApplicationController
   before_filter :load_resources, only: [:show]
 
   def index
-    @evaluations = Evaluation.all
+    @evaluations = Evaluation.paginate(page: params[:page], per_page: 30)
   end
 
   def show
