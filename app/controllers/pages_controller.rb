@@ -8,8 +8,8 @@ class PagesController < ApplicationController
   end
 
   def registration
-    @user_ip = remote_ip()
-    # raise @user_ip
+    @city = request.location.city || 'Unknown'
+    @state = request.location.data['region_name'] || 'Unknown'
   end
 
   def questions
