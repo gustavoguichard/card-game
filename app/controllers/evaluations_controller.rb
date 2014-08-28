@@ -1,21 +1,20 @@
 class EvaluationsController < ApplicationController
+  respond_to :html, :json
 
   def index
     @evaluations = Evaluation.all
   end
 
   def show
-    @evaluation = Evaluation.find(params[:id])
+    @evaluation = current_evaluation
   end
 
   def new
-    city = request.location.city || 'Unknown'
-    state = request.location.data['region_name'] || 'Unknown'
-    @evaluation = Evaluation.new(city: city, state: state)
+    @evaluation = current_evaluation
   end
 
   def create
-    @evaluation = Evaluation.new(params[:evaluation])
+    @evaluation = Evaluation.new(evaluation_params)
     if @evaluation.save
       redirect_to results_path, notice: 'You were successfully registrated.'
     else
@@ -25,14 +24,20 @@ class EvaluationsController < ApplicationController
 
   def update
     @evaluation = Evaluation.find(params[:id])
-    @evaluation.update_attributes(params[:evaluation])
-    respond_with @evaluation
+    @evaluation.update_attributes(evaluation_params)
+    redirect_to results_path, notice: 'You were successfully registrated.'
   end
 
   def destroy
     @evaluation = Evaluation.find(params[:id])
     @evaluation.destroy
     redirect_to evaluations_url
+  end
+
+private
+  
+  def evaluation_params
+    params[:evaluation].permit(:name, :city, :email, :state, :data)
   end
 
 end

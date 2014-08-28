@@ -7,7 +7,3 @@ DeloitteGame.Pages.Results =
     # Get's saved cards from localStorage
     cardsList.fetch()
     new DeloitteGame.Views.GameResultsCollection({collection: cardsList})
-    objs = []
-    for i in [1..47]
-      objs.push localStorage.getItem("gameCard-#{i}")
-    console.log objs

@@ -18,7 +18,13 @@ DeloitteGame.PageStarted = false
 
 $ ->
   action =  $('#init-js').data('action')
-  if action is 'Game'
-    DeloitteGame.Pages.Game.init()
-  else if action is 'Results'
-    DeloitteGame.Pages.Results.init()
+  resource =  $('#init-js').data('resource')
+  if resource is 'Pages'
+    if action is 'Game'
+      DeloitteGame.Pages.Game.init()
+    else if action is 'Results'
+      DeloitteGame.Pages.Results.init()
+  else if resource is 'Evaluations'
+    if action is 'New'
+      DeloitteGame.Pages.Registration.init()
+

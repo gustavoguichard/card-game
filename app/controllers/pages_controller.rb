@@ -1,16 +1,7 @@
 class PagesController < ApplicationController
-  before_filter :load_resources, only: [:game, :results]
+  before_filter :load_resources, only: [:game]
 
   def game
-  end
-
-  def results
-  end
-
-  def registration
-    city = request.location.city || 'Unknown'
-    state = request.location.data['region_name'] || 'Unknown'
-    @evaluation = Evaluation.new(city: city, state: state)
   end
 
   def questions
