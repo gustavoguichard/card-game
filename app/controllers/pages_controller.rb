@@ -8,8 +8,9 @@ class PagesController < ApplicationController
   end
 
   def registration
-    @city = request.location.city || 'Unknown'
-    @state = request.location.data['region_name'] || 'Unknown'
+    city = request.location.city || 'Unknown'
+    state = request.location.data['region_name'] || 'Unknown'
+    @evaluation = Evaluation.new(city: city, state: state)
   end
 
   def questions

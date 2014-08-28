@@ -25,6 +25,7 @@ gem 'google-analytics-rails'
 gem 'unicorn'
 
 gem 'geocoder'
+gem 'simple_form'
 
 group :production do
   gem 'heroku-deflater', '~> 0.4.1'
