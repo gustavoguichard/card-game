@@ -29,16 +29,11 @@ class Evaluation < ActiveRecord::Base
         if evaluation.starred_cards
           evaluation.starred_cards.each do | card |
             results = []
-            results.push(evaluation.id)
-            results.push(evaluation.name)
-            results.push(evaluation.email)
-            results.push(evaluation.created_at)
-            results.push(evaluation.city)
-            results.push(evaluation.state)
-            results.push(evaluation.keyword)
+            results.push(evaluation.id, evaluation.name, evaluation.email)
+            results.push(evaluation.created_at.strftime("%a %b %d, %Y, %l:%M:%S %p"))
+            results.push(evaluation.city, evaluation.state, evaluation.keyword)
             results.push(card['pile'])
-            results.push(cards[card['id']-1][:title])
-            results.push(cards[card['id']-1][:action])
+            results.push(cards[card['id']-1][:title], cards[card['id']-1][:action])
             csv << results
           end
         end
@@ -79,7 +74,7 @@ class Evaluation < ActiveRecord::Base
   end
 
   def starred_cards
-    data.select{|card| card['starred'] == true} if data
+    data.select{|card| card['starred'] == true}.sort_by{|card| card['pile'].length} if data
   end
 
   def starred_from_pile(pile)
