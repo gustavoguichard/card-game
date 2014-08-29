@@ -6,22 +6,26 @@ class Evaluation < ActiveRecord::Base
                   allow_nil: true,
                   :if => :email?
 
-  def results_for(pile, cards)
+  def results
     results = {}
-    if starred_from_pile(pile)
-      cards.group_by{|c| c[:action]}.each do |group|
-        ids = group[1].map{|oc| oc[:id]}
-        starred_ids = starred_from_pile(pile).map{|sc| sc['id'] if ids.include?(sc['id'])}
-        action_cards = cards.select{|ac| starred_ids.include?(ac[:id])}
-        unless action_cards.empty?
-          results[group[0]] = action_cards
+    %w(core adjacent aspirational out-of-bounds).each do |pile|
+      pile_results = {}
+      if starred_from_pile(pile)
+        StaticData::GAME_CARDS.group_by{|c| c[:action]}.each do |group|
+          ids = group[1].map{|oc| oc[:id]}
+          starred_ids = starred_from_pile(pile).map{|sc| sc['id'] if ids.include?(sc['id'])}
+          action_cards = StaticData::GAME_CARDS.select{|ac| starred_ids.include?(ac[:id])}
+          unless action_cards.empty?
+            pile_results[group[0]] = action_cards
+          end
         end
       end
+      results[pile] = pile_results
     end
     results
   end
 
-  def self.to_csv(cards)
+  def self.to_csv
     CSV.generate do |csv|
       header_names = %w(ID Name Email\ Address Timestamp City State Group\ Code Priority\ Level Role Category\ of\ Role)
       csv << header_names
@@ -29,11 +33,12 @@ class Evaluation < ActiveRecord::Base
         if evaluation.starred_cards
           evaluation.starred_cards.each do | card |
             results = []
+            index = card['id'] - 1
             results.push(evaluation.id, evaluation.name, evaluation.email)
             results.push(evaluation.created_at.strftime("%a %b %d, %Y, %l:%M:%S %p"))
             results.push(evaluation.city, evaluation.state, evaluation.keyword)
             results.push(card['pile'])
-            results.push(cards[card['id']-1][:title], cards[card['id']-1][:action])
+            results.push(StaticData::GAME_CARDS[index][:title], StaticData::GAME_CARDS[index][:action])
             csv << results
           end
         end
