@@ -27,7 +27,7 @@ class Evaluation < ActiveRecord::Base
 
   def self.to_csv
     CSV.generate do |csv|
-      header_names = %w(ID Name Email\ Address Timestamp City State Group\ Code Priority\ Level Role Category\ of\ Role)
+      header_names = %w(UserID Name Email\ Address Timestamp City State Group\ Code Priority\ Level Role Category\ of\ Role)
       csv << header_names
       all.each do | evaluation |
         if evaluation.starred_cards
