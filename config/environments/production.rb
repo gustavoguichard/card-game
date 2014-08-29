@@ -64,7 +64,7 @@ DeloitteGame::Application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: "http://monitorinstitute-game.herokuapp.com/" }
+  config.action_mailer.default_url_options = { host: "http://monitorinstitute-game.herokuapp.com" }
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
     port: 587,
