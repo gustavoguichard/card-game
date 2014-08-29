@@ -7,7 +7,7 @@ class EvaluationsController < ApplicationController
     @evaluations = Evaluation.paginate(page: params[:page], per_page: 30)
     respond_to do |format|
       format.html
-      format.csv { send_data @evaluations.to_csv(@cards) }
+      format.csv { send_data @evaluations.to_csv(@cards), filename: 'MI_Game_Results.csv' }
     end
   end
 
