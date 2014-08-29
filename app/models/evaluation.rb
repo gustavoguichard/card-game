@@ -8,11 +8,10 @@ class Evaluation < ActiveRecord::Base
 
   def results_for(pile, cards)
     results = {}
-    if data
-      starred_cards = data.select{|card| card['pile'] == pile and card['starred'] == true}
+    if starred_from_pile(pile)
       cards.group_by{|c| c[:action]}.each do |group|
         ids = group[1].map{|oc| oc[:id]}
-        starred_ids = starred_cards.map{|sc| sc['id'] if ids.include?(sc['id'])}
+        starred_ids = starred_from_pile(pile).map{|sc| sc['id'] if ids.include?(sc['id'])}
         action_cards = cards.select{|ac| starred_ids.include?(ac[:id])}
         unless action_cards.empty?
           results[group[0]] = action_cards
@@ -20,6 +19,31 @@ class Evaluation < ActiveRecord::Base
       end
     end
     results
+  end
+
+  def self.to_csv(cards)
+    CSV.generate do |csv|
+      header_names = %w(ID Name Email\ Address Timestamp City State Group\ Code Priority\ Level Role Category\ of\ Role)
+      csv << header_names
+      all.each do | evaluation |
+        if evaluation.starred_cards
+          evaluation.starred_cards.each do | card |
+            results = []
+            results.push(evaluation.id)
+            results.push(evaluation.name)
+            results.push(evaluation.email)
+            results.push(evaluation.created_at)
+            results.push(evaluation.city)
+            results.push(evaluation.state)
+            results.push(evaluation.keyword)
+            results.push(card['pile'])
+            results.push(cards[card['id']-1][:title])
+            results.push(cards[card['id']-1][:action])
+            csv << results
+          end
+        end
+      end
+    end
   end
 
   def name
@@ -52,6 +76,14 @@ class Evaluation < ActiveRecord::Base
     else
       read_attribute(:state)
     end
+  end
+
+  def starred_cards
+    data.select{|card| card['starred'] == true} if data
+  end
+
+  def starred_from_pile(pile)
+    starred_cards.select{|card| card['pile'] == pile} if starred_cards
   end
 
 end

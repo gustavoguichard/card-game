@@ -1,13 +1,13 @@
 class EvaluationsController < ApplicationController
   respond_to :html, :json
-  before_filter :load_resources, only: [:show]
+  before_filter :load_resources, only: [:show, :index]
   http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD'], only: [:index]
 
   def index
     @evaluations = Evaluation.paginate(page: params[:page], per_page: 30)
     respond_to do |format|
       format.html
-      format.xls
+      format.csv { send_data @evaluations.to_csv(@cards) }
     end
   end
 
