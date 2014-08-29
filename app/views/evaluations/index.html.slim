@@ -1,6 +1,7 @@
 .page-container.admin-container
   header.page-title
     h2 Admin
+    = link_to "Export all to CSV", admin_path(format: "csv"), class: "button small csv-button"
   .admin-list.row
     table
       thead
