@@ -6,9 +6,8 @@ class EvaluationMailer < ActionMailer::Base
   #
   #   en.evaluation_mailer.results_confirmation.subject
   #
-  def results_confirmation(evaluation, root_url)
+  def results_confirmation(evaluation)
     @evaluation = evaluation
-    @root_url = root_url
     mail to: evaluation.email, subject: "Check your game results"
   end
 end
