@@ -42,7 +42,9 @@ class EvaluationsController < ApplicationController
 
   def update
     @evaluation = Evaluation.find(params[:id])
+    mail_changed = params[:evaluation][:email] and params[:evaluation][:email] != @evaluation.email
     @evaluation.update_attributes(evaluation_params)
+    EvaluationMailer.results_confirmation(@evaluation, root_url).deliver if mail_changed
     redirect_to results_path, notice: 'You were successfully registrated.'
   end
 

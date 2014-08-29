@@ -37,6 +37,7 @@ group :production do
 end
 
 group :development do
+  gem 'letter_opener'
   gem 'annotate', github: 'ctran/annotate_models', branch: 'develop'
   gem 'quiet_assets'
   gem 'better_errors'
