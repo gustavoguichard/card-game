@@ -65,3 +65,20 @@
         right: -100%
         &:hover
           right: 0
+
+  @media only screen and (max-width: 640px)
+    top: 100px
+    min-width: 120px
+    .arrow-nav-link
+      padding-bottom: 5px
+      padding-top: 5px
+      i
+        width: rem-calc(26)
+        font-size: rem-calc(16)
+        padding-top: rem-calc(13)
+    &.prev-nav
+      .arrow-nav-link i
+        right: - rem-calc(26)
+    &.next-nav
+      .arrow-nav-link i
+        left: - rem-calc(26)
