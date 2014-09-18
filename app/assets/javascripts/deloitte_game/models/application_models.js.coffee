@@ -9,6 +9,7 @@ class DeloitteGame.Models.GameCard extends Backbone.Model
     starred: false
     action: ''
     title: ''
+    defaultChecked: true
 
   initialize: ->
     @on 'change:pile', @changeColor
@@ -20,6 +21,7 @@ class DeloitteGame.Models.GameCard extends Backbone.Model
 
   updatePile: (pile)=>
     if pile is @get('pile') then @set('pile', null) else @set('pile', pile)
+    if pile is 'out-of-bounds' and @get('defaultChecked') then @set('starred', true)
 
   changeColor: =>
     @set('starred', false)
@@ -31,3 +33,4 @@ class DeloitteGame.Models.GameCard extends Backbone.Model
 
   toggleStarred: =>
     @set 'starred', !@get("starred")
+    @set('defaultChecked', false) if @get('pile') is 'out-of-bounds'
