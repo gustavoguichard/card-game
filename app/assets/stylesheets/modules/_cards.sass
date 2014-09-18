@@ -105,6 +105,9 @@
       margin: 7px
       height: rem-calc(27)
       width: rem-calc(27)
+      @media only screen and (max-width: 831px)
+        height: rem-calc(32)
+        width: rem-calc(32)        
       border-radius: 50%
       cursor: pointer
       +transition(.7s)
@@ -158,7 +161,7 @@
       color: $game-dark
       display: block
       span
-        opacity: 0
+        opacity: .5
         +transition(.3s)
       &:hover
         span

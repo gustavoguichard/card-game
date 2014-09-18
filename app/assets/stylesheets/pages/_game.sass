@@ -67,8 +67,8 @@ h1, h2, h3, h4, h5, h6, p
 
 .cards-pile
   box-shadow: 0 0 0 1px $game-dark
-  padding: 10px 15px
-  min-height: 190px
+  padding: 5px 10px
+  min-height: 100px
   width: 238px
   vertical-align: top
   margin: 0 .5%
@@ -100,13 +100,16 @@ h1, h2, h3, h4, h5, h6, p
     font-size: rem-calc(26)
     font-weight: 700
     text-transform: uppercase
+    margin: 0
 
   .first-letter
     display: none
     text-transform: none
 
   .pile-description
-    font-size: rem-calc(20)
+    font-size: rem-calc(18)
+    line-height: 1.3em
+    margin: 0
 
   +decorative-content(after, false)
     width: 98%
