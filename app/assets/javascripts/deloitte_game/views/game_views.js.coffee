@@ -112,6 +112,7 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
   events:
     'click .cards-left-bt': 'leftCards'
     'click .cards-all-bt': 'allCards'
+    'click .clear-cards-bt': 'clearCards'
 
   initialize: ->
     @model.on 'change', @render
@@ -127,6 +128,11 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
 
   allCards: (e)=>
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
+    false
+
+  clearCards: (e)=>
+    localStorage.clear()
+    location.reload()
     false
 
 class DeloitteGame.Views.FooterNav extends Backbone.View

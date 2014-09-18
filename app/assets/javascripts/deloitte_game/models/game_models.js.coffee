@@ -11,6 +11,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     totalCards: 0
     finishedView: false
     isHome: true
+    isntHome: false
 
   initialize: ->
     @set('gameID', $('body').data('game-id'))
@@ -32,6 +33,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
   updatePageCards: =>
     if @requireCardsSelected()
       @set 'isHome', @get('currentView') == 'game'
+      @set 'isntHome', @get('currentView') != 'game'
       DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
       @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
       @updateTotalCards()
