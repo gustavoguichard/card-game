@@ -8,4 +8,9 @@ footer.counter-nav
 footer.footer-nav-next
   script#footer-nav-next type="text/template"
     .navigator class="{{currentView}} {{#if isViewDone}}done{{/if}}"
+      |{{#if isntHome}}
       a.footer-nav-bt href="{{nextLinkUrl}}" Go to the {{nextLinkTitle}}
+      |{{/if}}
+      |{{#if isHome}}
+      a.footer-nav-bt href="{{nextLinkUrl}}" You have now categorized all roles, click to move to the next part of the game
+      |{{/if}}

@@ -90,6 +90,8 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
     currentView: 'game'
     isViewDone: false
     isHomeDone: false
+    isHome: true
+    isntHome: false
 
   initialize: ->
     DeloitteGame.EventDispatcher.on 'view:changed', @viewChanged
@@ -104,6 +106,8 @@ class DeloitteGame.Models.GameNavigation extends Backbone.Model
 
   viewChanged: (page)=>
     @set 'currentView', page
+    @set 'isHome', @get('currentView') == 'game'
+    @set 'isntHome', @get('currentView') != 'game'
 
   viewDone: (done)=>
     @set 'isViewDone', done
