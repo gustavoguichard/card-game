@@ -12,6 +12,8 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     finishedView: false
     isHome: true
     isntHome: false
+    isSingleCard: true
+    nextSingleCard: false
 
   initialize: ->
     @set('gameID', $('body').data('game-id'))
@@ -25,6 +27,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     DeloitteGame.EventDispatcher.on 'collection:changed', @saveGame
     @form = $('form.edit_evaluation')
     @updateTotalCards()
+    @checkVisibleCards()
 
   saveGame: (newJSON)=>
     @form.find('#evaluation_data').val(newJSON)
@@ -55,6 +58,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
       length = $(".game-card-container#{@get('visibleCards')}.starred").length
       @set 'selectedCardsLength', length
     @checkPageDone()
+    @checkVisibleCards()
 
   updateVisibleCards: (filter)=>
     @set 'visibleCards', filter
@@ -74,6 +78,12 @@ class DeloitteGame.Models.GameState extends Backbone.Model
 
   routerChanged: (view)=>
     @set 'currentView', view
+
+  checkVisibleCards: =>
+    if @get('currentView') is 'game' and @get('isSingleCard')
+      currentCardId = $(".game-card-container.no-color").eq(0).attr('id')
+      if currentCardId then currentVisible = ".#{currentCardId}" else currentVisible = "all"
+      @set 'visibleCards', currentVisible
 
   triggerFinishedView: =>
     DeloitteGame.EventDispatcher.trigger 'view:done', @get('finishedView')

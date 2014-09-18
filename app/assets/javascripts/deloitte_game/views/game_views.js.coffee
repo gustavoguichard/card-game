@@ -52,6 +52,7 @@ class DeloitteGame.Views.GameState extends Backbone.View
   initialize: ->
     @model.on 'change:visibleCards', @sortCards
     filter = DeloitteGame.Helpers.getColorClassFromView(Backbone.history.fragment)
+    if filter is 'all' then filter = @model.get('visibleCards')
     @$el.mixItUp
         animation:
           duration: 940
@@ -110,7 +111,7 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
   tagName: 'span'
   template: null
   events:
-    'click .cards-left-bt': 'leftCards'
+    'click .cards-left-bt': 'singleCard'
     'click .cards-all-bt': 'allCards'
     'click .clear-cards-bt': 'clearCards'
 
@@ -122,11 +123,13 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
   render: =>
     @$el.html @template(@model.toJSON())
 
-  leftCards: (e)=>
-    DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', '.no-color'
+  singleCard: (e)=>
+    @model.set('isSingleCard', true)
+    @model.checkVisibleCards()
     false
 
   allCards: (e)=>
+    @model.set('isSingleCard', false)
     DeloitteGame.EventDispatcher.trigger 'visiblecards:changed', 'all'
     false
 
