@@ -8,8 +8,10 @@ private
   def current_evaluation
     Evaluation.find(session[:evaluation_id])
   rescue ActiveRecord::RecordNotFound
-    city = request.location.city || 'Unknown'
-    state = request.location.data['region_name'] || 'Unknown'
+    if request.location
+      city = request.location.city || 'Unknown'
+      state = request.location.data['region_name'] || 'Unknown'
+    end
     evaluation = Evaluation.create(city: city, state: state)
     session[:evaluation_id] = evaluation.id
     evaluation
