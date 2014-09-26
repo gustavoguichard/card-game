@@ -23,12 +23,9 @@
 
 footer.page-footer-info
   p
-    | For a set of helpful reflection questions prompted by these results, please 
-    = link_to "click here", questions_path
-    |.
     - if user_didnt_register?
-      br/
-      | If you haven’t already provided your email address and want to have these results sent to you, please 
-      = link_to "click here", registration_path
-      |.
-  p= link_to "New game", new_game_path, class: 'button new-game-bt'
+      = link_to "Email Results", registration_path, class: 'button'
+      |  
+    = link_to "Reflection Questions", questions_path, class: 'button'
+    |  
+    = link_to "New Game", new_game_path, class: 'button new-game-bt'
