@@ -176,6 +176,8 @@ class DeloitteGame.Views.PageArrowNav extends Backbone.View
   checkIfCanNavigate: =>
     unless @$('a').hasClass 'can-navigate'
       return false
+    else
+      jQuery('html,body', document).animate({scrollTop:100}, 300)
 
 class DeloitteGame.Views.WindowControll extends Backbone.View
   events:
