@@ -64,7 +64,6 @@ h1, h2, h3, h4, h5, h6, p
     .cards-pile
       +full-width-piles
 
-
 .cards-pile
   box-shadow: 0 0 0 1px $game-dark
   padding: 5px 10px
@@ -75,7 +74,6 @@ h1, h2, h3, h4, h5, h6, p
   position: relative
   display: inline-block
   +transition(.3s)
-  // +apply-to(less-than, desktop)
   @media only screen and (max-width: 1012px)
     +full-width-piles
   &.ui-droppable-hover
@@ -154,10 +152,13 @@ h1, h2, h3, h4, h5, h6, p
   box-shadow: 0 -1px 3px rgba(black,.3)
   +context(".game")
     padding: 12px 0
+
+.counter-nav, .navigator
   .button
     margin-bottom: 0em
     padding: 8px
     font-weight: bold
+    cursor: pointer
 
 .footer-nav-next
   cursor: pointer
@@ -174,6 +175,8 @@ h1, h2, h3, h4, h5, h6, p
       width: 100%
       padding: 20px 0
       color: inherit
+      &.footer-nav-bt
+        padding: 12px 0
     &.done
       bottom: 0
       +animation(slide-up .5s cubic-bezier(0.770, 0.000, 0.175, 1.000))

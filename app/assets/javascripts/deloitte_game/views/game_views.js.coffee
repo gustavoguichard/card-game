@@ -51,6 +51,7 @@ class DeloitteGame.Views.GameCard extends Backbone.View
 class DeloitteGame.Views.GameState extends Backbone.View
   initialize: ->
     @model.on 'change:visibleCards', @sortCards
+    DeloitteGame.EventDispatcher.on 'game:reset', @resetGame
     filter = DeloitteGame.Helpers.getColorClassFromView(Backbone.history.fragment)
     if filter is 'all' then filter = @model.get('visibleCards')
     @$el.mixItUp
@@ -67,6 +68,10 @@ class DeloitteGame.Views.GameState extends Backbone.View
     @$el.removeClass 'game core adjacent aspirational out-of-bounds'
     @$el.addClass @model.get 'currentView'
     @$el.mixItUp 'filter', @model.get('visibleCards')
+
+  resetGame: =>
+    localStorage.clear()
+    location.reload()
 
 # RESPONSIBLE FOR PILES CONTAINER INTERACTIONS LIKE STICKING
 # TO TOP AND OPENING DESCRIPTIONS WHEN IN SMALL SCREENS
@@ -134,12 +139,13 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
     false
 
   clearCards: (e)=>
-    localStorage.clear()
-    location.reload()
+    DeloitteGame.EventDispatcher.trigger 'game:reset'
     false
 
 class DeloitteGame.Views.FooterNav extends Backbone.View
   template: null
+  events:
+    'click .clear-cards-bt': 'clearCards'
 
   initialize: ->
     @model.on 'change', @render
@@ -148,6 +154,10 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
 
   render: =>
     @$el.html @template(@model.toJSON())
+
+  clearCards: (e)=>
+    e.preventDefault()
+    DeloitteGame.EventDispatcher.trigger 'game:reset'
 
 class DeloitteGame.Views.PageArrowNav extends Backbone.View
   tagName: 'aside'

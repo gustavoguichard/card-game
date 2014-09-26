@@ -12,5 +12,7 @@ footer.footer-nav-next
       a.footer-nav-bt href="{{nextLinkUrl}}" Go to the {{nextLinkTitle}}
       |{{/if}}
       |{{#if isHome}}
-      a.footer-nav-bt href="{{nextLinkUrl}}" You have now categorized all roles, click to move to the next part of the game
+      a.footer-nav-bt.first-nav-bt href="{{nextLinkUrl}}" 
+       | You have now categorized all roles, click to move to the next part of the game 
+       | <span class="clear-cards-bt small button">Clear my selections</a>
       |{{/if}}
