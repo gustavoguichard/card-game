@@ -2,7 +2,8 @@
   = render partial: 'shared/navigation', locals: {prev_link: '/#out-of-bounds', next_link: results_path, prev_title: "Out of Bounds Pile", next_title: "Results Page"}
 .page-container.registration-container
   header.page-title
-    h2 In order to see the results, please provide us with your basic information. Addresses will not be shared.
+    h4 
+      strong In order to see the results, please provide us with your basic information. Addresses will not be shared.
   .row
     = simple_form_for @evaluation, html: {class: "registration-form"} do |f|
       fieldset
