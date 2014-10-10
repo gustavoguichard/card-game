@@ -1,4 +1,5 @@
 = full-width-piles
+  min-height: auto
   min-height: initial
   box-shadow: none
   width: 25%
@@ -139,6 +140,7 @@ h1, h2, h3, h4, h5, h6, p
 .core, .adjacent, .aspirational, .out-of-bounds
   .cards-pile
     display: none
+    min-height: auto
     min-height: initial
 
 .core .blue-pile, .adjacent .green-pile, .aspirational .purple-pile, .out-of-bounds .orange-pile
@@ -154,6 +156,7 @@ h1, h2, h3, h4, h5, h6, p
     padding: 12px 0
 
 .counter-nav, .navigator
+  z-index: 200
   .button
     margin-bottom: 0em
     padding: 8px
