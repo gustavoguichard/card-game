@@ -20,7 +20,6 @@ class EvaluationsController < ApplicationController
     @results = @evaluation.results
     respond_to do |format|
       format.html
-      format.pdf {render :pdf => "results"}
     end
   end
 

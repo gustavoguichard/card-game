@@ -27,9 +27,6 @@ gem 'unicorn'
 
 gem 'geocoder'
 gem 'simple_form'
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
-gem 'wkhtmltopdf-heroku'
 gem 'will_paginate-foundation'
 
 group :production do
