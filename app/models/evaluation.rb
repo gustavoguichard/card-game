@@ -9,7 +9,7 @@ class Evaluation < ActiveRecord::Base
   scope :not_recent, lambda { where("created_at <= :date", date: 3.hours.ago) }
   scope :from_last_week, lambda { where("created_at >= :date", date: 1.week.ago) }
   scope :without_data, lambda { where(data: nil) }
-  scope :with_blank_results, lambda { where("data IS NOT NULL").select{|ev| ev.starred_cards.length == 0} }
+  scope :with_blank_results, lambda { where("data IS NOT NULL").select{|ev| ev.intentionally_starred_cards.length == 0} }
 
   def results
     results = {}
@@ -85,6 +85,10 @@ class Evaluation < ActiveRecord::Base
 
   def starred_cards
     data.select{|card| card['starred'] == true}.sort_by{|card| card['pile'].length} if data
+  end
+
+  def intentionally_starred_cards
+    data.select{|card| card['starred'] == true and card['pile'] != 'out-of-bounds'}.sort_by{|card| card['pile'].length} if data
   end
 
   def starred_from_pile(pile)
