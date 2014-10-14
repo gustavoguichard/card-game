@@ -127,6 +127,7 @@ class DeloitteGame.Views.FooterCounter extends Backbone.View
 
   render: =>
     @$el.html @template(@model.toJSON())
+    new DeloitteGame.Views.MenuTogglr({el: @$('.navbar-toggle')})
 
   singleCard: (e)=>
     @model.set('isSingleCard', true)

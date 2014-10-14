@@ -28,5 +28,4 @@ $ ->
     else if action is 'Show'
       DeloitteGame.Pages.Results.init()
 
-  for $togglr in $('.navbar-toggle')
-    new DeloitteGame.Views.MenuTogglr({el: $togglr})
+  new DeloitteGame.Views.MenuTogglr({el: $('.top-bar .navbar-toggle')})

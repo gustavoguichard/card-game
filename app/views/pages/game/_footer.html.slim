@@ -4,7 +4,7 @@ footer.counter-nav
       | You have chosen {{selectedCardsLength}} out of {{totalCardsOfView}} possible cards.
       |  <a href="/registration" class="registration-button small button">Done, Go to Registration Page</a>
       |{{#if isHome}}
-      |  <a class="cards-left-bt small button">View one card at a time</a> <a class="cards-all-bt small button">View / Edit all cards</a> <a class="clear-cards-bt alert small button">Clear my selections</a>
+      |  <a class="navbar-toggle small button" data-target=".footer-game-menu">Game Options</a> <span class="footer-game-menu"><a class="cards-left-bt small button">View one card at a time</a> <a class="cards-all-bt small button">View / Edit all cards</a> <a class="clear-cards-bt alert small button">Clear my selections</a></span>
       |{{/if}}
 footer.footer-nav-next
   script#footer-nav-next type="text/template"

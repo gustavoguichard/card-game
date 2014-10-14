@@ -152,6 +152,8 @@ h1, h2, h3, h4, h5, h6, p
   +stick-to(bottom, fixed)
   padding: 20px 0
   box-shadow: 0 -1px 3px rgba(black,.3)
+  .navbar-toggle
+    display: none
   .game &, .out-of-bounds &
     padding: 12px 0
   .registration-button
@@ -159,6 +161,24 @@ h1, h2, h3, h4, h5, h6, p
     margin: 8px
     .out-of-bounds &
       display: inline-block
+  
+  @media only screen and (max-width: 860px)
+    .navbar-toggle
+      display: inline-block
+      margin: 5px
+    .footer-game-menu
+      display: block
+      width: 100%
+      transition-property: all
+      transition-duration: .5s
+      transition-timing-function: cubic-bezier(0, 1, 0.5, 1)
+      max-height: 0
+      overflow-y: hidden
+      .button
+        margin: 5px
+
+      &.is-open
+        max-height: 200px
 
 .counter-nav, .navigator
   z-index: 200
