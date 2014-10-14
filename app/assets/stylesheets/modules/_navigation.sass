@@ -3,7 +3,6 @@
   top: 120px
   z-index: 30
   overflow: hidden
-  min-width: 190px
   a
     color: $game-medium-gray
   .arrow-nav-link
@@ -15,6 +14,7 @@
     font-weight: 700
     position: relative
     transition: .3s
+    max-width: 300px
     strong
       text-transform: none
       color: white
@@ -41,30 +41,32 @@
     left: 0
     padding-right: 50px
     .arrow-nav-link
-      left: -200%
+      left: -100px
+      margin-left: -300px
       i
         right: - rem-calc(50)
         border-left: none
         border-radius: 0 rem-calc(130) rem-calc(130) 0
       &.can-navigate
-        left: -100%
+        left: 0
         &:hover
-          left: 0
+          margin-left: 0
 
   &.next-nav
     right: 0
     padding-left: 50px
     text-align: right
     .arrow-nav-link
-      right: -200%
+      right: -100px
+      margin-right: -300px
       i
         left: - rem-calc(50)
         border-right: none
         border-radius: rem-calc(130) 0 0 rem-calc(130)
       &.can-navigate
-        right: -100%
+        right: 0
         &:hover
-          right: 0
+          margin-right: 0
 
   @media only screen and (max-width: 640px)
     top: 100px
