@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6, p
 
 .piles-container
   margin-bottom: 20px
-  +transition(.3s)
+  transition: .3s
   @media only screen and (max-width: 1012px)
     width: 100%
 
@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6, p
   margin: 0 .5%
   position: relative
   display: inline-block
-  +transition(.3s)
+  transition: .3s
   @media only screen and (max-width: 1012px)
     +full-width-piles
   &.ui-droppable-hover
@@ -125,7 +125,7 @@ h1, h2, h3, h4, h5, h6, p
     border: 1px solid $game-dark
     background: white
     z-index: -1
-    +transition(.3s)    
+    transition: .3s
 
 @media only screen and (max-width: 831px)
   .game .cards-pile
@@ -172,7 +172,7 @@ h1, h2, h3, h4, h5, h6, p
     left: 0
     right: 0
     bottom: -100px
-    +transition(all .5s)
+    transition: all .5s
     a
       display: block
       width: 100%
@@ -182,7 +182,7 @@ h1, h2, h3, h4, h5, h6, p
         padding: 12px 0
     &.done
       bottom: 0
-      +animation(slide-up .5s cubic-bezier(0.770, 0.000, 0.175, 1.000))
+      animation: slide-up .5s cubic-bezier(0.770, 0.000, 0.175, 1.000)
     &.core
       background-color: $game-blue
     &.adjacent
@@ -226,7 +226,7 @@ h1, h2, h3, h4, h5, h6, p
   &.aspirational
     background-color: $game-purple
 
-+keyframes("slide-up")
+@keyframes "slide-up"
   from
     bottom: -100px
   to
