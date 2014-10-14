@@ -18,6 +18,7 @@ gem 'compass-rails', '>= 1.1.7'
 gem 'semantic-mixins'
 gem 'foundation-rails'
 gem 'initjs'
+gem 'autoprefixer-rails'
 
 gem 'google-analytics-rails'
 
