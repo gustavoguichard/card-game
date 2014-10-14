@@ -3,6 +3,9 @@
   padding: 14px 10px 5px
   border-bottom: 1px solid darken($game-gray, 3%)
   font-family: $alternative-font
+  position: relative
+  height: 72px
+  z-index: 35
   a
     color: $game-medium-gray
     &:hover
@@ -11,6 +14,33 @@
   .logo-image
     +image-replace("logo.png")
     float: left
+    margin: 5px 0 12px
+  
+  .navbar-toggle
+    display: none
+    border: 1px solid #ddd
+    background: none
+    border-radius: 4px
+    width: 44px
+    height: 34px
+    position: absolute
+    right: 10px
+    top: 20px
+    padding: 5px
+    transition: .3s
+    .icon-bar
+      display: block
+      width: 22px
+      height: 2px
+      border-radius: 1px
+      background-color: #aaa
+      margin: 4px auto
+
+    &:hover
+      background: rgba(255,255,255,.3)
+      border-color: #cacaca
+      .icon-bar
+        background-color: #666
 
   .main-menu
     float: right
@@ -38,3 +68,40 @@
 
   .social-link
     font-size: rem-calc(20)
+
+
+  @media only screen and (max-width: 860px)
+    .navbar-toggle
+      display: block
+    .main-menu
+      display: block
+      position: absolute
+      width: 100%
+      background-color: $game-gray
+      padding: 0 12.5px
+      left: 0
+      top: 72px
+      border-bottom: 1px solid darken($game-gray, 3%)
+      transition-property: all
+      transition-duration: .5s
+      transition-timing-function: cubic-bezier(0, 1, 0.5, 1)
+      max-height: 0
+      overflow-y: hidden
+      z-index: -1
+      &.is-open
+        max-height: 600px
+        padding-bottom: 35px
+    .main-menu-link, .inline-list
+      display: block
+      float: none !important
+      margin: 0 !important
+    .main-menu-link
+      a
+        display: block
+        padding: 23px 0
+      &:after
+        display: none
+      &:hover a, &.current a
+        color: scale-color($game-medium-gray, $lightness: -60%)
+    .social-link:first-child
+      margin-left: 0

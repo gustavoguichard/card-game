@@ -2,6 +2,10 @@ header.top-bar
   .row
     = link_to "http://monitorinstitute.com/communityphilanthropy/", class: "logo-image" do
       h1 What's next for community philanthropy
+    button.navbar-toggle.collapsed data-target=".main-menu"
+      span.icon-bar
+      span.icon-bar
+      span.icon-bar
     nav.main-menu
       ul.inline-list
         li.main-menu-link
@@ -14,7 +18,7 @@ header.top-bar
           = link_to "What's new", "http://monitorinstitute.com/communityphilanthropy/whats-new/"
         li.main-menu-link.current
           = link_to "Game", "http://monitorinstitute.com/communityphilanthropy/prioritizing-roles-game/"
-      ul.inline-list
+      ul.social-list.inline-list
         li.social-link
           = link_to "http://www.twitter.com/MntrInstitute" do
             i.entypo-twitter

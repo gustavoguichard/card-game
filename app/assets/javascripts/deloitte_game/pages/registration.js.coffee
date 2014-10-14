@@ -3,4 +3,4 @@
 ################################################################################
 DeloitteGame.Pages.Registration = 
   init: ->
-    console.log "Registration Page"
+    # console.log "Registration Page"
