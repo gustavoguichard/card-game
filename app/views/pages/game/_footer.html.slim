@@ -4,7 +4,7 @@ footer.counter-nav
       | You have chosen {{selectedCardsLength}} out of {{totalCardsOfView}} possible cards.
       |  <a href="/registration" class="registration-button small button">Done, Go to Registration Page</a>
       |{{#if isHome}}
-      |  <a class="cards-left-bt small button">View one card at a time</a> <a class="cards-all-bt small button">View / Edit all cards</a> <a class="clear-cards-bt small button">Clear my selections</a>
+      |  <a class="cards-left-bt small button">View one card at a time</a> <a class="cards-all-bt small button">View / Edit all cards</a> <a class="clear-cards-bt alert small button">Clear my selections</a>
       |{{/if}}
 footer.footer-nav-next
   script#footer-nav-next type="text/template"
@@ -15,5 +15,5 @@ footer.footer-nav-next
       |{{#if isHome}}
       a.footer-nav-bt.first-nav-bt href="{{nextLinkUrl}}" 
        | You have now categorized all roles, click to move to the next part of the game 
-       | <span class="clear-cards-bt small button">Clear my selections</a>
+       | <span class="clear-cards-bt alert small button">Clear my selections</a>
       |{{/if}}
