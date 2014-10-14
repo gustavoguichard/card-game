@@ -152,8 +152,12 @@ h1, h2, h3, h4, h5, h6, p
   +stick-to(bottom, fixed)
   padding: 20px 0
   box-shadow: 0 -1px 3px rgba(black,.3)
-  +context(".game")
+  .game &, .out-of-bounds &
     padding: 12px 0
+  .registration-button
+    display: none
+    .out-of-bounds &
+      display: inline-block
 
 .counter-nav, .navigator
   z-index: 200
@@ -165,6 +169,8 @@ h1, h2, h3, h4, h5, h6, p
 
 .footer-nav-next
   cursor: pointer
+  .out-of-bounds &
+    display: none
   .navigator
     background: $game-dark
     color: white

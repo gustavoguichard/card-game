@@ -2,6 +2,7 @@ footer.counter-nav
   span.footer-count
     script#cards-counter type="text/template" 
       | You have chosen {{selectedCardsLength}} out of {{totalCardsOfView}} possible cards.
+      |  <a href="/registration" class="registration-button small button">Done, Go to Registration Page</a>
       |{{#if isHome}}
       |  <a class="cards-left-bt small button">View one card at a time</a> <a class="cards-all-bt small button">View / Edit all cards</a> <a class="clear-cards-bt small button">Clear my selections</a>
       |{{/if}}
