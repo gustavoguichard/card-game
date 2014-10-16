@@ -111,19 +111,30 @@
         opacity: 1
       &.blue-color
         background-color: $game-blue
-        &:hover, &.selected
+        &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-blue
       &.green-color
         background-color: $game-green
-        &:hover, &.selected
+        &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-green
       &.purple-color
         background-color: $game-purple
-        &:hover, &.selected
+        &.selected
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-purple
       &.orange-color
         background-color: $game-orange
-        &:hover, &.selected
+        &.selected
+          box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
+
+    @media only screen and (min-width: 831px)
+      .select-color
+        &.blue-color:hover
+          box-shadow: 0 0 0 3px white, 0 0 0 5px $game-blue
+        &.green-color:hover
+          box-shadow: 0 0 0 3px white, 0 0 0 5px $game-green
+        &.purple-color:hover
+          box-shadow: 0 0 0 3px white, 0 0 0 5px $game-purple
+        &.orange-color:hover
           box-shadow: 0 0 0 3px white, 0 0 0 5px $game-orange
   
   .starred-circle
