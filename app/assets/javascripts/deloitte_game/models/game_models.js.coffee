@@ -12,6 +12,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     finishedView: false
     isHome: true
     isntHome: false
+    isLastScreen: false
     isSingleCard: true
     nextSingleCard: false
     cssTransitions: true
@@ -42,6 +43,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     if @requireCardsSelected()
       @set 'isHome', @get('currentView') == 'game'
       @set 'isntHome', @get('currentView') != 'game'
+      @set 'isLastScreen', @get('currentView') == 'out-of-bounds'
       DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
       @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
       @updateTotalCards()
