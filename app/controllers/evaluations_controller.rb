@@ -43,6 +43,8 @@ class EvaluationsController < ApplicationController
       if mail_changed
         EvaluationMailer.results_confirmation(@evaluation).deliver
         flash[:success] = "Thank you! We are sending your personalized game results to your email address."
+      rescue ActiveRecord::RecordNotFound
+        flash[:error] = "There was a problem and we couldn't send the results to your email. Please, try again later."
       end
       redirect_to results_path
     else
