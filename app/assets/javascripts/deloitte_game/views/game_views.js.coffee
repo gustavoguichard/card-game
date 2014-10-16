@@ -158,7 +158,8 @@ class DeloitteGame.Views.FooterNav extends Backbone.View
 
   clearCards: (e)=>
     e.preventDefault()
-    DeloitteGame.EventDispatcher.trigger 'game:reset'
+    confirmation = confirm "Are you sure you want to clear all your card selections and START OVER AGAIN?"
+    DeloitteGame.EventDispatcher.trigger 'game:reset' if confirmation
 
 class DeloitteGame.Views.PageArrowNav extends Backbone.View
   tagName: 'aside'

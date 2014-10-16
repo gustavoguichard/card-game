@@ -36,3 +36,15 @@ table
   padding: 0 2em 2em
   max-width: 1000px
   margin: 0 auto
+
+.alert-flash
+  text-align: center
+  font-size: 1.3em
+  font-weight: bold
+  z-index: 900
+  +stick-to(top, fixed)
+  &.error
+    background-color: #f00
+
+.input.error input
+  border-color: #f00

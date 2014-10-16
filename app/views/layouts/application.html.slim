@@ -10,6 +10,7 @@ html.no-js lang="en"
     = csrf_meta_tags
   body data-game-id="#{current_evaluation.id}"
     = initjs_tag "DeloitteGame"
+    = render partial: 'shared/flash'
     = render partial: 'shared/header'
     = yield :navigation
     = yield

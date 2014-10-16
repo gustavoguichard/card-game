@@ -29,3 +29,4 @@ $ ->
       DeloitteGame.Pages.Results.init()
 
   new DeloitteGame.Views.MenuTogglr({el: $('.top-bar .navbar-toggle')})
+  new DeloitteGame.Views.FlashMessage({el: $('#flash')})
