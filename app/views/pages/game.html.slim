@@ -1,7 +1,7 @@
 - content_for :navigation
   = render partial: 'shared/dynamic_navigation'
 .page-container.game-container
-  = render partial: 'shared/browser_message' if browser.ie? and browser.version < 10
+  = render partial: 'shared/browser_message' if browser.ie? and browser.version.to_i < 10
   = render 'pages/game/header'
   = render 'pages/game/piles'
 
