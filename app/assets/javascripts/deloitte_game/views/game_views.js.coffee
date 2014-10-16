@@ -194,6 +194,7 @@ class DeloitteGame.Views.WindowControll extends Backbone.View
     'scroll': 'updatedScrollPos'
 
   initialize: ->
+    $('.change-page').on 'click', @saveBeforeLeave
     @model.on 'change', @render
     @topBarStuck = false
     @topBarPosition = $('#sticky-wrapper').offset().top
@@ -212,3 +213,12 @@ class DeloitteGame.Views.WindowControll extends Backbone.View
     else if top <= @topBarPosition and @topBarStuck
       @topBarStuck = false
       DeloitteGame.EventDispatcher.trigger 'window:stucktoggle'
+
+  saveBeforeLeave: (e)=>
+    link = $(e.currentTarget).find('a').attr('href')
+    unless link.indexOf('#') > -1
+      DeloitteGame.EventDispatcher.trigger 'collection:persist'
+      setTimeout ->
+        window.location.href = link
+      , 3000
+      false

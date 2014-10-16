@@ -26,13 +26,16 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     DeloitteGame.EventDispatcher.on 'visiblecards:changed', @updateVisibleCards
     DeloitteGame.EventDispatcher.on 'card:changed', @updateSelectedCardsLength
     DeloitteGame.EventDispatcher.on 'card:colorclicked', @checkPageDone
-    DeloitteGame.EventDispatcher.on 'collection:changed', @saveGame
+    DeloitteGame.EventDispatcher.on 'collection:changed', @updateGameForm
+    DeloitteGame.EventDispatcher.on 'collection:persist', @saveGame
     @form = $('form.edit_evaluation')
     @updateTotalCards()
     @checkVisibleCards()
 
-  saveGame: (newJSON)=>
+  updateGameForm: (newJSON)=>
     @form.find('#evaluation_data').val(newJSON)
+
+  saveGame: =>
     @form.submit()
 
   updatePageCards: =>
@@ -42,6 +45,7 @@ class DeloitteGame.Models.GameState extends Backbone.Model
       DeloitteGame.EventDispatcher.trigger 'view:changed', @get('currentView')
       @set {visibleCards: DeloitteGame.Helpers.getColorClassFromView(@get('currentView'))}
       @updateTotalCards()
+    @saveGame()
 
   updateTotalCards: =>
     if @get('currentView') is 'game'
