@@ -220,5 +220,5 @@ class DeloitteGame.Views.WindowControll extends Backbone.View
       DeloitteGame.EventDispatcher.trigger 'collection:persist'
       setTimeout ->
         window.location.href = link
-      , 3000
+      , 500
       false
