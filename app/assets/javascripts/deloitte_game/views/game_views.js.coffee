@@ -73,6 +73,7 @@ class DeloitteGame.Views.GameState extends Backbone.View
       @$el.delay(800).fadeOut =>
         @$el.mixItUp 'filter', @model.get('visibleCards')
         @$el.fadeIn()
+        jQuery('html,body', document).animate({scrollTop:340}, 300)
 
 
   resetGame: =>
