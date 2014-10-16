@@ -41,8 +41,12 @@ class EvaluationsController < ApplicationController
     mail_changed = (params[:evaluation][:email].present? and params[:evaluation][:email] != @evaluation.email)
     if @evaluation.update_attributes(evaluation_params)
       if mail_changed
-        EvaluationMailer.results_confirmation(@evaluation).deliver
-        flash[:success] = "Thank you! We are sending your personalized game results to your email address."
+        begin
+          EvaluationMailer.results_confirmation(@evaluation).deliver
+          flash[:success] = "Thank you! We are sending your personalized game results to your email address."
+        rescue Net::SMTPAuthenticationError
+          flash[:error] = "There was a problem and we couldn't send the results to your email. Please, try again later."
+        end
       end
       redirect_to results_path
     else
