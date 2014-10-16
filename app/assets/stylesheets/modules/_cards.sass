@@ -49,8 +49,11 @@
   vertical-align: top
   .csstransitions &.flipped .card-face
     transform: rotateY(360deg)
-  .no-csstransitions .card-front
-    z-index: 2
+  .no-csstransitions &
+    .card-front
+      z-index: 2
+    .card-back
+      z-index: -1
   .no-csstransitions &.flipped
     .card-front
       z-index: -1
