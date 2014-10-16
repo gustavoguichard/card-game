@@ -67,7 +67,13 @@ class DeloitteGame.Views.GameState extends Backbone.View
   sortCards: =>
     @$el.removeClass 'game core adjacent aspirational out-of-bounds'
     @$el.addClass @model.get 'currentView'
-    @$el.mixItUp 'filter', @model.get('visibleCards')
+    if @model.get('cssTransitions')
+      @$el.mixItUp 'filter', @model.get('visibleCards')
+    else
+      @$el.delay(800).fadeOut =>
+        @$el.mixItUp 'filter', @model.get('visibleCards')
+        @$el.fadeIn()
+
 
   resetGame: =>
     localStorage.clear()

@@ -14,8 +14,10 @@ class DeloitteGame.Models.GameState extends Backbone.Model
     isntHome: false
     isSingleCard: true
     nextSingleCard: false
+    cssTransitions: true
 
   initialize: ->
+    @set('cssTransitions', false) if $('html').hasClass('no-csstransitions')
     @set('gameID', $('body').data('game-id'))
     @on 'change:totalCardsOfView', @updateSelectedCardsLength
     @on 'change:currentView', @updatePageCards
