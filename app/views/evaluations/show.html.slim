@@ -1,3 +1,6 @@
+- content_for :additional_assets
+  = stylesheet_link_tag :print, media: :print
+
 - content_for :navigation
   - if user_didnt_register?
     = render partial: 'shared/navigation', locals: {prev_link: registration_path, next_link: questions_path, prev_title: "Registration Page", next_title: "Reflection Questions"}

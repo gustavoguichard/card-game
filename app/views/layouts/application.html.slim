@@ -6,6 +6,7 @@ html.no-js lang="en"
     title= content_for?(:title) ? yield(:title) : "Monitor Institute Game"
     = favicon_link_tag 'favicon.ico'
     = stylesheet_link_tag "application", media: "all"
+    = yield :additional_assets
     = javascript_include_tag "vendor/modernizr"
     = csrf_meta_tags
   body data-game-id="#{current_evaluation.id}"
