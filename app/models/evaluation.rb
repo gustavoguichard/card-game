@@ -35,7 +35,7 @@ class Evaluation < ActiveRecord::Base
       header_names = %w(UserID Name Email\ Address Timestamp City State Group\ Code Priority\ Level Role Category\ of\ Role)
       csv << header_names
       all.each do | evaluation |
-        if evaluation.starred_cards
+        if evaluation.starred_cards.class == Array
           evaluation.starred_cards.each do | card |
             results = []
             index = card['id'] - 1
