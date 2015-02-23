@@ -84,7 +84,7 @@ class Evaluation < ActiveRecord::Base
   end
 
   def starred_cards
-    data.select{|card| card['starred'] == true}.sort_by{|card| card['pile'].length} if data
+    data.select{|card| card['pile'].present? and card['starred'] == true}.sort_by{|card| card['pile'].length} if data
   end
 
   def intentionally_starred_cards
